@@ -1,0 +1,56 @@
+﻿<Window x:Class="Net24_Labb3.Dialogs.PackOptionsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Net24_Labb3.Dialogs"
+        mc:Ignorable="d"
+        Title="Pack Options" Height="300" Width="300">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0">
+            <Label Content="Pack Name:" 
+                   Margin="10"
+                   FontWeight="Bold" />
+            <TextBox x:Name="PackOptionsTextBox"
+                     Text="Question Pack #1"
+                     Margin="10 0 10 0"
+                     Height="20"
+                     />
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <Label Content="Difficulty:"
+                   Margin="10"
+                   FontWeight="Bold" />
+            <ComboBox x:Name="PackOptionsComboBox" 
+                      Margin="10 0 10 0" >
+                <ComboBoxItem x:Name="DifficultyEasy"
+                              Content="Easy" />
+                <ComboBoxItem x:Name="DifficultyMedium"
+                              Content="Medium" />
+                <ComboBoxItem x:Name="DifficultyHard"
+                              Content="Hard" />
+            </ComboBox>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="2">
+            <Label Content="Time Limit:"
+                   Margin="10"
+                   FontWeight="Bold" />
+            <Slider x:Name="PackOptionsSlider"
+                    Margin="10 0 10 0"
+                    Minimum="5"
+                    Maximum="120"/>
+        </StackPanel>
+        
+    </Grid>
+</Window>

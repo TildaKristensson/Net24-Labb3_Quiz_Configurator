@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="Net24_Labb3.Views.MenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Net24_Labb3.Views"
+             mc:Ignorable="d" d:DesignWidth="800" Height="30">
+    <UserControl.Background>
+        <LinearGradientBrush>
+            <GradientStopCollection>
+                <GradientStop 
+                    Offset="0.1"
+                    Color="LightPink" />
+            </GradientStopCollection>
+        </LinearGradientBrush>
+    </UserControl.Background>
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="ButtonBackground" Color="LightPink" />
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="5*" />
+        </Grid.ColumnDefinitions>
+
+        
+        <Button x:Name="FileButton" 
+                Content="File" 
+                Grid.Column="0" 
+                Height="30" 
+                FontFamily="Cascadia Code SemiBold"
+                Background="{StaticResource ButtonBackground}" 
+                FontSize="16"/>
+
+        <Button x:Name="EditButton" 
+                Content="Edit"
+                Grid.Column="1"
+                Height="30"
+                FontFamily="Cascadia Code Semibold"
+                Background="{StaticResource ButtonBackground}" 
+                FontSize="16"/>
+
+        <Button x:Name="ViewButton" 
+                Content="View"
+                Grid.Column="2"
+                Height="30"
+                FontFamily="Cascadia Code Semibold"
+                Background="{StaticResource ButtonBackground}" 
+                FontSize="16"/>
+        
+    </Grid>
+</UserControl>
+
+    <!--ska man använda Menu här?--> 

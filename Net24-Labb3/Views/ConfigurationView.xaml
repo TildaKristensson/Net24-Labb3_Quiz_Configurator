@@ -4,9 +4,82 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Net24_Labb3.Views"
+             DataContext="{Binding ConfigurationViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel  Grid.Column="0">
+            <Label x:Name="QuestionPackName"
+                   FontWeight="Bold"
+                   Margin="10"
+                   Content="Question Pack Name" />
+
+            <ListBox x:Name="QueryListBox"
+                    Grid.Column="0"
+                    Width="380"
+                    Height="360"
+                    Padding="5" SelectionMode="Multiple"
+                    ItemsSource="{Binding ActivePack.Questions}"/>
+
+            <!--lägg till tre knappar med Icons, (hur??)-->
+
+        </StackPanel>
+
+        <StackPanel Grid.Column="1"  DataContext="{Binding ConfigurationViewModel}">
+            <Label Content="Question:" 
+                   FontWeight="Bold"
+                   Margin="50, 30, 50, 10" />
+
+            <TextBox Text="{Binding ActiveQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                     Width="300"
+                     Height="80"
+                     Padding="5" />
+
+            <Label Content="Correct Answer:"
+                   FontWeight="Bold"
+                   Margin="50, 30, 50, 0" />
+
+            <TextBox x:Name="CorrectAnswerTextBox" 
+                     Text="{Binding ActiveQuestion.CorrectAnswer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Width="300"
+                     Height="20"
+                     Padding="2"/>
+
+            <Label Content="First Incorrect Answer:"
+                   FontWeight="Bold"
+                    Margin="50, 5, 50, 0" />
+
+            <TextBox x:Name="FirstIncorrectAnswerTextBox" 
+                     Text="{Binding ActiveQuestion.IncorrectAnswers[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Width="300"
+                     Height="20"
+                     Padding="2"/>
+
+            <Label Content="Second Incorrect Answer:"
+                   FontWeight="Bold"
+                    Margin="50, 5, 50, 0" />
+
+            <TextBox x:Name="SecondIncorrectAnswerTextBox" 
+                     Text="{Binding ActiveQuestion.IncorrectAnswers[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Width="300"
+                     Height="20"
+                     Padding="2"/>
+
+            <Label Content="Third Incorrect Answer:"
+                   FontWeight="Bold"
+                   Margin="50, 5, 50, 0" />
+
+            <TextBox x:Name="ThirdIncorrectAnswerTextBox" 
+                     Text="{Binding ActiveQuestion.IncorrectAnswers[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Width="300"
+                     Height="20"
+                     Padding="2"/>
+
+        </StackPanel>
     </Grid>
 </UserControl>

@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using Net24_Labb3.Model;
+using Net24_Labb3.ViewModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +21,9 @@ namespace Net24_Labb3
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = new MainWindowViewModel();
+           
         }
     }
 }

@@ -4,69 +4,52 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Net24_Labb3.Views"
+             DataContext="{Binding PlayViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Background>
-        <LinearGradientBrush>
-            <GradientStopCollection>
-                <GradientStop 
-                Offset="0.1"
-                Color="LavenderBlush" />
-            </GradientStopCollection>
-        </LinearGradientBrush>
-    </UserControl.Background>
-    
+
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
 
         <Label x:Name="PlayViewQuestion" 
-               Content="Here we ask the question right?"
-               Grid.Row="0"
+               Content="Här ska frågan vara"
                HorizontalAlignment="Center"
-               VerticalAlignment="Center"
+               VerticalAlignment="Top"
                FontSize="25"
-               FontFamily="Cascadia Code"/>
+               FontFamily="Bell MT" Margin="0,54,0,0"/>
+
         <Label x:Name="PlayViewWhichQuestion"
                Content="Question nr of nr"
-               Grid.Row="0"
                HorizontalAlignment="Center" 
-               Margin="0,140,0,50"
-               FontSize="13"
-               FontFamily="Cascadia Code"/>
+               Margin="0,113,0,302"
+               FontSize="15"
+               FontFamily="Bell MT"/>
 
         <Button x:Name="AnswerOptionButton1"
-                Content="Option 1"
-                FontFamily="Cascadia Code"
-                Grid.Row="1"
-                Margin="197,8,423,14"
+                Content="{Binding TestData}"
+                Command="{Binding UpdateButtonCommand}"
+                FontFamily="Bell MT"
+                Margin="198,180,422,180"
                 Width="180" Height="90"/>
 
         <Button x:Name="AnswerOptionButton2"
                 Content="Option 2"
-                FontFamily="Cascadia Code"
-                Grid.Row="1"
-                Margin="423,8,197,14"
+                FontFamily="Bell MT"
+                Margin="422,180,198,180"
                 Width="180" Height="90"/>
 
         <Button x:Name="AnswerOptionButton3"
                 Content="Option 3"
-                FontFamily="Cascadia Code"
-                Grid.Row="2"
-                Margin="197,8,423,14"
+                FontFamily="Bell MT"
+                Margin="198,304,422,56"
                 Width="180" Height="90"/>
 
         <Button x:Name="AnswerOptionButton4"
                 Content="Option 4"
-                FontFamily="Cascadia Code"
-                Grid.Row="2"
-                Margin="423,8,197,14"
+                FontFamily="Bell MT"
+                Margin="422,304,198,56"
                 Width="180" Height="90"/>
-        
+
         <!--lägg till timer i översta högre hörnet-->
-        
+
     </Grid>
 </UserControl>

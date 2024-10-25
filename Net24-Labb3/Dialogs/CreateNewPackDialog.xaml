@@ -5,8 +5,58 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Net24_Labb3.Dialogs"
         mc:Ignorable="d"
-        Title="CreateNewPackDialog" Height="450" Width="800">
+        Title="New Question Pack" Height="300" Width="300">
     <Grid>
-        
+
+        <StackPanel>
+            <Label Content="Pack Name:" 
+                   Margin="10"
+                   FontWeight="Bold" />
+            
+            <TextBox x:Name="NewQuestionPackTextBox"
+                     Text="PackName"
+                     Margin="10 0 10 0"
+                     Height="20" />
+
+            <Label Content="Difficulty:"
+                   Margin="10"
+                   FontWeight="Bold" />
+            
+            <ComboBox x:Name="NewQuestionPackComboBox" 
+                        Margin="10 0 10 0" >
+                <ComboBoxItem x:Name="DifficultyEasy"
+                                Content="Easy" />
+                <ComboBoxItem x:Name="DifficultyMedium"
+                                Content="Medium" />
+                <ComboBoxItem x:Name="DifficultyHard"
+                                Content="Hard" />
+            </ComboBox>
+
+    
+            <Label Content="Time Limit:"
+                    Margin="10"
+                    FontWeight="Bold" />
+            
+            <Slider x:Name="NewQuestionPackSlider"
+                    Margin="10 0 10 0"
+                    Minimum="5"
+                    Maximum="120"/>
+
+            <Grid>
+              
+                <Button x:Name="CancelNewQuestionPackButton"
+                    Content="Cancel" 
+                    Width="60" Height="25"
+                    HorizontalAlignment="Left"
+                    Margin="60, 30, 0, 0"/>
+
+                <Button x:Name="CreateNewQuestionPackButton"
+                    Content="Create" 
+                    Width="60" Height="25"
+                    HorizontalAlignment="Right"
+                    Margin="0, 30, 60, 0"/>
+            </Grid>
+                
+        </StackPanel>
     </Grid>
 </Window>

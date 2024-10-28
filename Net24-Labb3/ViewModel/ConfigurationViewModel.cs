@@ -29,7 +29,26 @@ namespace Net24_Labb3.ViewModel
                 RaisePropertyChanged();
             }
         }
-       
+
+        private string _query;
+        public string Query { 
+            get => ActiveQuestion.Query;
+            set {
+                ActiveQuestion.Query = value;
+                RaisePropertyChanged("ActiveQuestion");
+            }
+        }
+
+        private string _correctAnswer;
+
+        public string CorrectAnswer {
+            get => ActiveQuestion.CorrectAnswer; 
+            set
+            {
+                ActiveQuestion.CorrectAnswer = value;
+                RaisePropertyChanged(nameof(CorrectAnswer));
+            }
+        }
         public ConfigurationViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;

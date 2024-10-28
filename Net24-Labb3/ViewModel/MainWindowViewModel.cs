@@ -37,7 +37,7 @@ namespace Net24_Labb3.ViewModel
 
             PlayViewModel = new PlayViewModel(this);
 
-            ActivePack = new QuestionPackViewModel(new QuestionPack("My default Question Pack"));
+            ActivePack = new QuestionPackViewModel(new QuestionPack("ITHS Question Pack"));
             ActivePack.Questions.Add(new Question("Vilken färg är ITHS ankan?", "Lila", "Grön", "Blå", "Rosa"));
             ActivePack.Questions.Add(new Question("Vad kostar en ITHS-hoodie?", "275kr", "329kr", "249kr", "315kr"));
 

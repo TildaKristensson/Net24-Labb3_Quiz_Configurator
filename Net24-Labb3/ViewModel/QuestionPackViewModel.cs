@@ -51,14 +51,6 @@ namespace Net24_Labb3.ViewModel
             }
         }
         public ObservableCollection<Question> Questions { get; }
-
-        //private void NewQuestionPack()
-        //{
-        //    QuestionPack.Add(new QuestionPack
-        //    {
-
-        //    });
-        //}
        
     }
 }

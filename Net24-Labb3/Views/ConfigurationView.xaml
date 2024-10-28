@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:local="clr-namespace:Net24_Labb3.Views"
              DataContext="{Binding ConfigurationViewModel}"
              mc:Ignorable="d" 
@@ -17,20 +18,31 @@
             <Label x:Name="QuestionPackName"
                    FontWeight="Bold"
                    Margin="10"
-                   Content="Question Pack Name" />
+                   Content="{Binding ActivePack.Name}" />
 
             <ListBox x:Name="QueryListBox"
                     Grid.Column="0"
                     Width="380"
                     Height="360"
-                    Padding="5" SelectionMode="Multiple"
-                    ItemsSource="{Binding ActivePack.Questions}"/>
+                    Padding="5" SelectionMode="Single"
+                    SelectedItem="{Binding ActiveQuestion, Mode=TwoWay}"
+                    ItemsSource="{Binding ActivePack.Questions}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="Question:"
+                                       FontWeight="Bold" />
+                            <TextBlock Text="{Binding Query, Mode=TwoWay}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
-            <!--lägg till tre knappar med Icons, (hur??)-->
+            <!--lägg till tre knappar med Icons, -->
 
         </StackPanel>
 
-        <StackPanel Grid.Column="1"  DataContext="{Binding ConfigurationViewModel}">
+        <StackPanel Grid.Column="1">
             <Label Content="Question:" 
                    FontWeight="Bold"
                    Margin="50, 30, 50, 10" />

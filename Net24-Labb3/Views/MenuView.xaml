@@ -27,7 +27,7 @@
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Add Question"
                           Icon="{fa:Icon CirclePlus}"
-                          Command="{Binding AddCommand}"/>
+                          Command="{Binding ConfigurationViewModel.AddNewQuestionCommand}"/>
                 <MenuItem Header="_Remove Question"
                           Icon="{fa:Icon CircleMinus}"
                           Command="{Binding RemoveCommand}"/>

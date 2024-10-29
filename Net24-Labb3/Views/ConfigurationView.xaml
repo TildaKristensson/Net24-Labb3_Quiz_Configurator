@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:local="clr-namespace:Net24_Labb3.Views"
-             DataContext="{Binding ConfigurationViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -14,16 +13,58 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel  Grid.Column="0">
+        <Grid>
+            <Button x:Name="ConfigPackButton"
+                    Width="20"
+                    Height="20" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Top"
+                    Margin="20, 12, 80, 5" 
+                    Command="{Binding ConfigurationViewModel.OpenPackOptionsCommand}">
+                <Button.Content>
+                    <fa:IconBlock Icon="Sliders" />
+                </Button.Content>
+            </Button>
+
+            <Button x:Name="ConfigAddButton"
+                    Grid.Column="0"
+                    Width="20"
+                    Height="20"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="0, 12, 50, 5" 
+                    Command="{Binding ConfigurationViewModel.AddNewQuestionCommand}">
+                <Button.Content>
+                    <fa:IconBlock Icon="Plus" />
+                </Button.Content>
+            </Button>
+
+            <Button x:Name="ConfigRemoveButton"
+                    Width="20"
+                    Height="20" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Top"
+                    Margin="20, 12, 20, 5">
+                <Button.Content>
+                    <fa:IconBlock Icon="Minus" />
+                </Button.Content>
+            </Button>
+
+
+        </Grid>
+        
+        <StackPanel  Grid.Column="0" DataContext="{Binding ConfigurationViewModel}">
             <Label x:Name="QuestionPackName"
                    FontWeight="Bold"
                    Margin="10"
+                   Width="200"
+                   HorizontalAlignment="Left"
                    Content="{Binding ActivePack.Name}" />
 
             <ListBox x:Name="QueryListBox"
                     Grid.Column="0"
                     Width="380"
-                    Height="360"
+                    Height="380"
                     Padding="5" SelectionMode="Single"
                     SelectedItem="{Binding ActiveQuestion, Mode=TwoWay}"
                     ItemsSource="{Binding ActivePack.Questions}">
@@ -38,11 +79,9 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <!--lägg till tre knappar med Icons, -->
-
         </StackPanel>
 
-        <StackPanel Grid.Column="1">
+        <StackPanel DataContext="{Binding ConfigurationViewModel}" Grid.Column="1" >
             <Label Content="Question:" 
                    FontWeight="Bold"
                    Margin="50, 30, 50, 10" />

@@ -16,6 +16,10 @@ namespace Net24_Labb3.ViewModel
         public DelegateCommand OpenCreatePackDialogCommand { get; }
         public DelegateCommand OpenPackOptionsCommand { get; }
 
+        public DelegateCommand AddNewQuestionCommand { get; }
+
+        public DelegateCommand RemoveQuestionCommand { get; }
+
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }
 
         private Question _activeQuestion;
@@ -46,7 +50,41 @@ namespace Net24_Labb3.ViewModel
             set
             {
                 ActiveQuestion.CorrectAnswer = value;
-                RaisePropertyChanged(nameof(CorrectAnswer));
+                RaisePropertyChanged("ActiveQuestion");
+            }
+        }
+
+        private string _incorrectAnswer1;
+
+        public string IncorrectAnswer1 
+        {
+            get => ActiveQuestion.IncorrectAnswers[0]; 
+            set
+            {
+                ActiveQuestion.IncorrectAnswers[0] = value;
+                RaisePropertyChanged("ActiveQuestion");
+            }
+        }
+
+        private string _incorrectAnswer2;
+        public string IncorrectAnswer2
+        {
+            get => ActiveQuestion.IncorrectAnswers[1];
+            set
+            {
+                ActiveQuestion.IncorrectAnswers[1] = value;
+                RaisePropertyChanged("ActiveQuestion");
+            }
+        }
+
+        private string _incorrectAnswer3;
+        public string IncorrectAnswer3
+        {
+            get => ActiveQuestion.IncorrectAnswers[2];
+            set
+            {
+                ActiveQuestion.IncorrectAnswers[2] = value;
+                RaisePropertyChanged("ActiveQuestion");
             }
         }
         public ConfigurationViewModel(MainWindowViewModel? mainWindowViewModel)
@@ -56,6 +94,32 @@ namespace Net24_Labb3.ViewModel
             OpenCreatePackDialogCommand = new DelegateCommand(OpenCreatePackDialog, CanOpenCreatePackDialog);
 
             OpenPackOptionsCommand = new DelegateCommand(OpenPackOptions, CanOpenPackOptions);
+
+            AddNewQuestionCommand = new DelegateCommand(AddNewQuestion, CanAddNewQuestion);
+
+            RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
+        }
+
+        private void RemoveQuestion(object obj)
+        {
+            ActivePack?.Questions.Remove(ActiveQuestion);
+        }
+
+        private bool CanRemoveQuestion(object? arg)
+        {
+            return true;
+        }
+
+        private bool CanAddNewQuestion(object? arg)
+        {
+            return true;
+        }
+
+        private void AddNewQuestion(object obj)
+        {
+            ActivePack?.Questions.Add(new Question(Query, CorrectAnswer, IncorrectAnswer1, IncorrectAnswer2, IncorrectAnswer3));
+
+            AddNewQuestionCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanOpenPackOptions(object? arg)

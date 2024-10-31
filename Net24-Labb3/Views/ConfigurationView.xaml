@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-             xmlns:local="clr-namespace:Net24_Labb3.Views"
+             xmlns:local="clr-namespace:Net24_Labb3.Views" xmlns:viewmodel="clr-namespace:Net24_Labb3.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -44,7 +44,8 @@
                     Height="20" 
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Top"
-                    Margin="20, 12, 20, 5">
+                    Margin="20, 12, 20, 5"
+                    Command="{Binding ConfigurationViewModel.RemoveQuestionCommand}">
                 <Button.Content>
                     <fa:IconBlock Icon="Minus" />
                 </Button.Content>
@@ -59,7 +60,7 @@
                    Margin="10"
                    Width="200"
                    HorizontalAlignment="Left"
-                   Content="{Binding ActivePack.Name}" />
+                   Content="{Binding ActivePack.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <ListBox x:Name="QueryListBox"
                     Grid.Column="0"

@@ -22,6 +22,12 @@ namespace Net24_Labb3.Dialogs
         public CreateNewPackDialog()
         {
             InitializeComponent();
+            DataContext = App.Current.MainWindow.DataContext;
+        }
+
+        private void CloseCreateNewPackDialog(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

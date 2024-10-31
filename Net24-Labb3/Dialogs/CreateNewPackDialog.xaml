@@ -3,27 +3,33 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Net24_Labb3.Dialogs"
+        xmlns:local="clr-namespace:Net24_Labb3.Dialogs" 
+        xmlns:converters="clr-namespace:Net24_Labb3.Converters" xmlns:viewmodel="clr-namespace:Net24_Labb3.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="New Question Pack" Height="300" Width="300">
+
     <Grid>
+        <Grid.Resources>
+            <converters:DifficultyConverter x:Key="DifficultyConverter" />
+        </Grid.Resources>
 
         <StackPanel>
-            <Label Content="Pack Name:" 
+            <Label Content="Pack Name" 
                    Margin="10"
                    FontWeight="Bold" />
             
             <TextBox x:Name="NewQuestionPackTextBox"
-                     Text="PackName"
                      Margin="10 0 10 0"
-                     Height="20" />
+                     Height="20" 
+                     Text="{Binding NewPack.Name}"/>
 
             <Label Content="Difficulty:"
                    Margin="10"
                    FontWeight="Bold" />
             
             <ComboBox x:Name="NewQuestionPackComboBox" 
-                        Margin="10 0 10 0" >
+                        Margin="10 0 10 0" 
+                        SelectedItem="{Binding NewPack.Difficulty, Converter={StaticResource DifficultyConverter}}">
                 <ComboBoxItem x:Name="DifficultyEasy"
                                 Content="Easy" />
                 <ComboBoxItem x:Name="DifficultyMedium"
@@ -40,7 +46,8 @@
             <Slider x:Name="NewQuestionPackSlider"
                     Margin="10 0 10 0"
                     Minimum="5"
-                    Maximum="120"/>
+                    Maximum="120"
+                    Value="{Binding NewPack.TimeLimitInSeconds}"/>
 
             <Grid>
               
@@ -48,13 +55,16 @@
                     Content="Cancel" 
                     Width="60" Height="25"
                     HorizontalAlignment="Left"
-                    Margin="60, 30, 0, 0"/>
+                    Margin="60, 30, 0, 0"
+                    Click="CloseCreateNewPackDialog"/>
 
                 <Button x:Name="CreateNewQuestionPackButton"
                     Content="Create" 
                     Width="60" Height="25"
                     HorizontalAlignment="Right"
-                    Margin="0, 30, 60, 0"/>
+                    Margin="0, 30, 60, 0"
+                    Command="{Binding CreatePackCommand}"
+                        Click="CloseCreateNewPackDialog"/>
             </Grid>
                 
         </StackPanel>

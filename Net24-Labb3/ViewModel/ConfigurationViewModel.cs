@@ -99,51 +99,50 @@ namespace Net24_Labb3.ViewModel
 
             RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
         }
-
+        private bool CanRemoveQuestion(object? arg) { return true; }
         private void RemoveQuestion(object obj)
         {
             ActivePack?.Questions.Remove(ActiveQuestion);
+            RemoveQuestionCommand.RaiseCanExecuteChanged();
         }
 
-        private bool CanRemoveQuestion(object? arg)
-        {
-            return true;
-        }
-
-        private bool CanAddNewQuestion(object? arg)
-        {
-            return true;
-        }
-
+        private bool CanAddNewQuestion(object? arg) { return true; }
         private void AddNewQuestion(object obj)
         {
-            ActivePack?.Questions.Add(new Question(Query, CorrectAnswer, IncorrectAnswer1, IncorrectAnswer2, IncorrectAnswer3));
+            if (ActiveQuestion != null)
+            {
+                var AddQuestion = new Question(
+                ActiveQuestion.Query,
+                ActiveQuestion.CorrectAnswer,
+                ActiveQuestion.IncorrectAnswers[0],
+                ActiveQuestion.IncorrectAnswers[1],
+                ActiveQuestion.IncorrectAnswers[2]);
 
+                ActivePack?.Questions.Add(AddQuestion);
+            }
+            else
+            {
+                ActivePack.Questions.Add(new Question("New Question", string.Empty, string.Empty, string.Empty, string.Empty));
+            }
+         
             AddNewQuestionCommand.RaiseCanExecuteChanged();
+            
         }
 
-        private bool CanOpenPackOptions(object? arg)
-        {
-            return true;
-        }
+        private bool CanOpenPackOptions(object? arg) {return true;}
 
         private void OpenPackOptions(object obj)
         {
+            
             PackOptionsDialog packOptionsDialog = new();
             packOptionsDialog.ShowDialog();
 
             OpenPackOptionsCommand.RaiseCanExecuteChanged();
         }
-
-  
-        private bool CanOpenCreatePackDialog(object? arg)
-        {
-            return true;
-        }
+        private bool CanOpenCreatePackDialog(object? arg) {return true;}
 
         private void OpenCreatePackDialog(object obj)
         {
-
             CreateNewPackDialog createNewPackDialog = new();
             createNewPackDialog.ShowDialog();
 

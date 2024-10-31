@@ -33,32 +33,6 @@ namespace Net24_Labb3.ViewModel
         public PlayViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
-
-            TestData = "Start Value";
-
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += Timer_Tick;
-            //timer.Start();
-
-            UpdateButtonCommand = new DelegateCommand(UpdateButton, CanUpdateButton);
-            //AddQuestionCommand = new DelegateCommand(AddQuestion, CanAddQuestion);
-
-        }
-
-       
-
-        private bool CanUpdateButton(object? arg) => TestData.Length < 20;
-
-        private void UpdateButton(object obj)
-        {
-            TestData += "X";
-            UpdateButtonCommand.RaiseCanExecuteChanged();
-        }
-
-        private void Timer_Tick(object? sender, EventArgs e)
-        {
-            TestData += "X";
         }
     }
 }

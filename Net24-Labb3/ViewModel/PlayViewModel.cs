@@ -15,20 +15,6 @@ namespace Net24_Labb3.ViewModel
 
         private DispatcherTimer timer;
 
-        private string _testData;
-
-        public string TestData
-        {
-            get => _testData;
-            private set
-            {
-                _testData = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public DelegateCommand UpdateButtonCommand { get; }
-
       
         public PlayViewModel(MainWindowViewModel? mainWindowViewModel)
         {

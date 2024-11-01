@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Net24_Labb3.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,8 @@ namespace Net24_Labb3.Dialogs
         public PackOptionsDialog()
         {
             InitializeComponent();
+
+            DataContext = new MainWindowViewModel();
         }
     }
 }

@@ -18,6 +18,14 @@ namespace Net24_Labb3.ViewModel
 
         public ConfigurationViewModel ConfigurationViewModel { get; }
 
+        //public bool VisibleWindow { get; set; }
+
+
+        private bool _isPlayMode;
+
+        //public DelegateCommand ShowConfigurationViewCommand;
+
+       
         public DelegateCommand CreatePackCommand { get; }
 
         public DelegateCommand SetActivePackCommand { get; }
@@ -48,13 +56,45 @@ namespace Net24_Labb3.ViewModel
             }
         }
 
-        public QuestionPackViewModel MorePacks { get; private set; }
+        //public bool IsConfigurationMode 
+        //{ 
+        //    get { return _isConfigurationMode; }
+        //    set
+        //    {
+        //        _isConfigurationMode = value;
+        //        RaisePropertyChanged(nameof(IsConfigurationMode));
+        //    }
+        //}
+
+        public bool IsPlayMode 
+        { 
+            get { return _isPlayMode; }
+            set
+            {
+                _isPlayMode = value;
+                RaisePropertyChanged(nameof(IsPlayMode));
+                RaisePropertyChanged(nameof(IsConfigurationMode));
+            }
+        }
+
+        public bool IsConfigurationMode => !IsPlayMode;
+
+        public DelegateCommand ShowPlayViewCommand { get; }
+        public DelegateCommand EndPlayViewCommand { get; }
 
         public MainWindowViewModel()
         {
             ConfigurationViewModel = new ConfigurationViewModel(this);
 
             PlayViewModel = new PlayViewModel(this);
+
+            //ShowConfigurationViewCommand = new DelegateCommand(ShowConfigurationView);
+            //ShowPlayViewCommand = new DelegateCommand(ShowPlayMode);
+
+            ShowPlayViewCommand = new DelegateCommand(_ => StartPlay());
+            EndPlayViewCommand = new DelegateCommand(_ => EndPlay());
+
+            IsPlayMode = false;
 
             Packs = new ObservableCollection<QuestionPackViewModel>();
 
@@ -70,6 +110,27 @@ namespace Net24_Labb3.ViewModel
 
             CreatePackCommand = new DelegateCommand(CreatePack, CanCreatePack);
         }
+
+        private void StartPlay()
+        {
+            IsPlayMode = true;
+        }
+        private void EndPlay()
+        {
+            IsPlayMode = false;
+        }
+
+        
+
+        //private void ShowPlayMode(object obj)
+        //{
+        //    IsPlayMode = true;
+        //}
+
+        //private void ShowConfigurationView(object obj)
+        //{
+        //    IsPlayMode = false;
+        //}
 
         private void SetActivePack(object obj)
         {

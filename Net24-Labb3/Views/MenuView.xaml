@@ -58,7 +58,8 @@
 
             <MenuItem Header="_View" >
                 <MenuItem Header="_Play" 
-                          Icon="{fa:Icon Gamepad}" />
+                          Icon="{fa:Icon Gamepad}" 
+                          Command="{Binding ShowPlayViewCommand}"/>
                 <MenuItem Header="_Edit" 
                           Icon="{fa:Icon Gears}" />
                 <Separator/>

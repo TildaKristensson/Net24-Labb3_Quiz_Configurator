@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Net24_Labb3.Views"
-             DataContext="{Binding PlayViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -25,8 +24,8 @@
                FontFamily="Bell MT"/>
 
         <Button x:Name="AnswerOptionButton1"
-                Content="{Binding TestData}"
-                Command="{Binding UpdateButtonCommand}"
+                Content=""
+                Command=""
                 FontFamily="Bell MT"
                 Margin="198,180,422,180"
                 Width="180" Height="90"/>

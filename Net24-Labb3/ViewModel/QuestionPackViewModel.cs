@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Net24_Labb3.ViewModel
@@ -16,6 +17,7 @@ namespace Net24_Labb3.ViewModel
         private readonly Model.QuestionPack model;
 
         //public DelegateCommand NewCommand => new DelegateCommand(execute => { }, canExecute => { return true; });
+        [JsonConstructor]
         public QuestionPackViewModel(Model.QuestionPack model)
         {
             this.model = model;

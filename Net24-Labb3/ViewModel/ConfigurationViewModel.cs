@@ -1,5 +1,6 @@
 ﻿using Net24_Labb3.Command;
 using Net24_Labb3.Dialogs;
+using Net24_Labb3.FileHandlers;
 using Net24_Labb3.Model;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,10 @@ namespace Net24_Labb3.ViewModel
         public DelegateCommand RemoveQuestionCommand { get; }
 
         public DelegateCommand RemovePackCommand { get; }
+
+        public DelegateCommand SaveQuestionCommand { get; }
+
+        private readonly JsonFileHandler _jsonFileHandler;
 
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }
 
@@ -102,14 +107,20 @@ namespace Net24_Labb3.ViewModel
 
             RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
 
+            SaveQuestionCommand = new DelegateCommand(SaveQuestion);
+
             RemovePackCommand = new DelegateCommand(RemovePack);
 
-           
+            _jsonFileHandler = new JsonFileHandler();
         }
+
+      
 
         private void RemovePack(object obj)
         {
             mainWindowViewModel?.Packs.Remove(ActivePack);
+            Task.Run(() => _jsonFileHandler.RemoveQuestionPackByName(ActivePack.Name));
+
             RemovePackCommand.RaiseCanExecuteChanged();
         }
 
@@ -117,6 +128,8 @@ namespace Net24_Labb3.ViewModel
         private void RemoveQuestion(object obj)
         {
             ActivePack?.Questions.Remove(ActiveQuestion);
+            Task.Run(() => _jsonFileHandler.AddOrUpdateQuestionPack(ActivePack));
+
             RemoveQuestionCommand.RaiseCanExecuteChanged();
         }
 
@@ -124,24 +137,30 @@ namespace Net24_Labb3.ViewModel
         private void AddNewQuestion(object obj)
         {
             mainWindowViewModel.IsConfigurationMode = true;
-            if (ActiveQuestion != null)
-            {
-                var AddQuestion = new Question(
-                ActiveQuestion.Query,
-                ActiveQuestion.CorrectAnswer,
-                ActiveQuestion.IncorrectAnswers[0],
-                ActiveQuestion.IncorrectAnswers[1],
-                ActiveQuestion.IncorrectAnswers[2]);
+            //if (ActiveQuestion != null)
+            //{
+            //    var AddQuestion = new Question(
+                
+            //    ActiveQuestion.Query,
+            //    ActiveQuestion.CorrectAnswer,
+            //    ActiveQuestion.IncorrectAnswers);
 
-                ActivePack?.Questions.Add(AddQuestion);
-            }
-            else
-            {
-                ActivePack.Questions.Add(new Question("New Question", string.Empty, string.Empty, string.Empty, string.Empty));
-            }
-         
+            //    ActivePack?.Questions.Add(AddQuestion);
+            //}
+            //else
+            //{
+                ActivePack?.Questions.Add(new Question("New Question", string.Empty, new string[] {"", "", ""}));
+            //}
+
             AddNewQuestionCommand.RaiseCanExecuteChanged();
             
+        }
+
+        private void SaveQuestion(object obj)
+        {
+            Task.Run(() => _jsonFileHandler.AddOrUpdateQuestionPack(ActivePack));
+
+            SaveQuestionCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanOpenPackOptions(object? arg) {return true;}

@@ -15,25 +15,34 @@ namespace Net24_Labb3.FileHandlers
     class JsonFileHandler
     {
         private readonly string _filePath;
+        private readonly JsonSerializerOptions _options;
 
         public JsonFileHandler()
         {
-            _filePath = Directory.GetCurrentDirectory() + "\\Packs.txt";
+            _filePath = Directory.GetCurrentDirectory() + "\\Packs1.txt";
             //File.SetAttributes(filePath, FileAttributes.Normal);
             EnsureDirectoryAndFileExists();
+
+            _options = new JsonSerializerOptions
+            {
+                IncludeFields = true, // Includes both fields and properties in serialization and deserialization
+                PropertyNameCaseInsensitive = true // Optional: makes matching case-insensitive
+            };
         }
 
         //för att lägga till eller uppdatera ett questionPack
         public async Task AddOrUpdateQuestionPack(QuestionPackViewModel questionPack)
         {
-            var fileContent = File.ReadAllText(_filePath);
-            var questionPacks = JsonSerializer.Deserialize<ObservableCollection<QuestionPackViewModel>>(fileContent);
+            var fileContent = await File.ReadAllTextAsync(_filePath);
+            var models = JsonSerializer.Deserialize<ObservableCollection<Model.QuestionPack>>(fileContent, _options);
+            var viewModels = models.Select(model => new QuestionPackViewModel(model)).ToList();
+            var viewModelsObservableCollection = new ObservableCollection<QuestionPackViewModel>(viewModels);
 
             var packExistsAtIndex = -1;
 
-            for (int i = 0; i < questionPacks.Count; i++)
+            for (int i = 0; i < viewModelsObservableCollection.Count; i++)
             {
-                if (questionPacks[i].Name.Equals(questionPack.Name, StringComparison.CurrentCultureIgnoreCase))
+                if (viewModelsObservableCollection[i].Name.Equals(questionPack.Name, StringComparison.CurrentCultureIgnoreCase))
                 {
                     packExistsAtIndex = i;
                 }
@@ -41,14 +50,14 @@ namespace Net24_Labb3.FileHandlers
 
             if (packExistsAtIndex >= 0)
             {
-                questionPacks[packExistsAtIndex] = questionPack;
+                viewModelsObservableCollection[packExistsAtIndex] = questionPack;
             }
             else
             {
-                questionPacks.Add(questionPack);
+                viewModelsObservableCollection.Add(questionPack);
             }
 
-            var newFileCOntent = JsonSerializer.Serialize(questionPacks);
+            var newFileCOntent = JsonSerializer.Serialize(viewModelsObservableCollection);
             File.WriteAllText(_filePath, newFileCOntent);
         }
 
@@ -56,7 +65,7 @@ namespace Net24_Labb3.FileHandlers
         public async Task RemoveQuestionPackByName(string packName)
         {
             var fileContent = await File.ReadAllTextAsync(_filePath);
-            var questionPacks = JsonSerializer.Deserialize<ObservableCollection<QuestionPackViewModel>>(fileContent);
+            var questionPacks = JsonSerializer.Deserialize<ObservableCollection<QuestionPackViewModel>>(fileContent, _options);
 
             var packToRemove = questionPacks.FirstOrDefault(p => p.Name.Equals(packName, StringComparison.CurrentCultureIgnoreCase));
 
@@ -72,8 +81,8 @@ namespace Net24_Labb3.FileHandlers
         //för att hämta en enskild questionpack "by name"
         public async Task<QuestionPackViewModel> GetQuestionPackByName(string packName)
         {
-            var fileContent = File.ReadAllText(_filePath);
-            var questionPacks = JsonSerializer.Deserialize<ObservableCollection<QuestionPackViewModel>>(fileContent);
+            var fileContent = await File.ReadAllTextAsync(_filePath);
+            var questionPacks = JsonSerializer.Deserialize<ObservableCollection<QuestionPackViewModel>>(fileContent, _options);
 
             foreach (var questionPack in questionPacks)
             {
@@ -85,12 +94,17 @@ namespace Net24_Labb3.FileHandlers
         }
 
         //Hämtar alla questionPacks
-        public async Task<ObservableCollection<QuestionPackViewModel>> GetQuestionPacksFromFile(string packName)
+        public async Task<ObservableCollection<QuestionPackViewModel>> GetQuestionPacksFromFile()
         {
-            var fileContent = File.ReadAllText(_filePath);
-            var questionPacks = JsonSerializer.Deserialize<ObservableCollection<QuestionPackViewModel>>(fileContent);
+            var fileContent = await File.ReadAllTextAsync(_filePath);
+            if (fileContent == null || fileContent == string.Empty)
+                return null;
 
-            return questionPacks;
+            var models = JsonSerializer.Deserialize<ObservableCollection<Model.QuestionPack>>(fileContent, _options);
+            var viewModels = models.Select(model => new QuestionPackViewModel(model)).ToList();
+            var viewModelsObservableCollection = new ObservableCollection<QuestionPackViewModel>(viewModels);
+
+            return viewModelsObservableCollection;
         }
 
         public void EnsureDirectoryAndFileExists()
@@ -106,9 +120,9 @@ namespace Net24_Labb3.FileHandlers
                 if (!File.Exists(_filePath) || new FileInfo(_filePath).Length == 0)
                 {
                     var emptyPacks = new ObservableCollection<QuestionPackViewModel>();
-                    string jsonContent = JsonSerializer.Serialize(emptyPacks);
+                    string jsonContent = JsonSerializer.Serialize(emptyPacks, _options);
 
-                    File.WriteAllText(_filePath, jsonContent);
+                    File.WriteAllTextAsync(_filePath, jsonContent);
                 }
             }
             catch (Exception ex)

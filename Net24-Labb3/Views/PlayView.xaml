@@ -8,6 +8,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+    </UserControl.Resources>
+    
     <Grid>
         <Grid>
             <Label x:Name="PlayViewQuestion" 
@@ -20,7 +24,7 @@
                    Height="70"/>
 
             <Label x:Name="PlayViewWhichQuestion"
-               Content="Question nr of nr" 
+               Content="{Binding PlayViewModel.QuestionCounterText}" 
                FontSize="15"
                FontFamily="Bell MT" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,113,0,0"/>
             <TextBlock
@@ -36,33 +40,57 @@
 
 
         <Button x:Name="AnswerOptionButton1"
-                Content="{}"
-                Command=""
+                Content="{Binding PlayViewModel.Answers[0].AnswerOption}"
+                Command="{Binding PlayViewModel.ValidateAnswerCommand}"
+                CommandParameter="{Binding PlayViewModel.Answers[0]}"
+                Background="{Binding PlayViewModel.AnswerOptionOneBackgroundColor}"
                 FontFamily="Bell MT"
                 Margin="130,165,370,180"
                 Width="150" Height="70"
                 TabIndex="1"/>
 
         <Button x:Name="AnswerOptionButton2"
-                Content="Option 2"
+                Content="{Binding PlayViewModel.Answers[1].AnswerOption}"
+                Command="{Binding PlayViewModel.ValidateAnswerCommand}"
+                CommandParameter="{Binding PlayViewModel.Answers[1]}"
+                Background="{Binding PlayViewModel.AnswerOptionTwoBackgroundColor}"
                 FontFamily="Bell MT"
                 Margin="370,165,130,180"
                 Width="150" Height="70"
                 TabIndex="2"/>
 
         <Button x:Name="AnswerOptionButton3"
-                Content="Option 3"
+                Content="{Binding PlayViewModel.Answers[2].AnswerOption}"
+                Command="{Binding PlayViewModel.ValidateAnswerCommand}"
+                CommandParameter="{Binding PlayViewModel.Answers[2]}"
+                Background="{Binding PlayViewModel.AnswerOptionThreeBackgroundColor}"
                 FontFamily="Bell MT"
                 Margin="130,300,370,20"
                 Width="150" Height="70"
                 TabIndex="3"/>
 
         <Button x:Name="AnswerOptionButton4"
-                Content="Option 4"
+                Content="{Binding PlayViewModel.Answers[3].AnswerOption}"
+                Command="{Binding PlayViewModel.ValidateAnswerCommand}"
+                CommandParameter="{Binding PlayViewModel.Answers[3]}"
+                Background="{Binding PlayViewModel.AnswerOptionFourBackgroundColor}"
                 FontFamily="Bell MT"
                 Margin="370,300,130,20"
                 Width="150" Height="70"
                 TabIndex="4"/>
 
+
+        <TextBlock Text="Time has run out, move to next question!"
+                   Width="500" Height="100"
+                   FontWeight="Bold"
+                   
+                   FontFamily="Bell MT"
+                   Visibility="{Binding PlayViewModel.ShowOutOfTimeText, Converter={StaticResource boolToVisibilityConverter}}" Foreground="#FF0F1DF7" FontSize="22" Margin="205,140,95,210"/>
+
+        <Button Content="Next Question"
+        Visibility="{Binding PlayViewModel.NextQuestionAvailable, Converter={StaticResource boolToVisibilityConverter}}"
+        Command="{Binding PlayViewModel.MoveToNextQuestionCommand}"
+                Width="100"
+        Height="30" Margin="670,278,30,142"/>
     </Grid>
 </UserControl>

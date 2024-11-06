@@ -108,5 +108,7 @@
         <views:PlayView x:Name="PlayModeView" Grid.Row="1"
                         Visibility="{Binding IsPlayMode, Converter={StaticResource boolToVisibilityConverter}}" Loaded="PlayModeView_Loaded" />
 
+        <views:ResultView Grid.Row="1"
+                          Visibility="{Binding IsResultMode, Converter={StaticResource boolToVisibilityConverter}}" />
     </Grid>
 </Window>

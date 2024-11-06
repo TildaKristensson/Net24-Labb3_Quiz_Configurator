@@ -70,6 +70,9 @@
                      Padding="2"
                      TabIndex="6"/>
 
+            <Button Width="80" Height="30" Content="Save Question"
+                    Command="{Binding SaveQuestionCommand}"/>
+
         </StackPanel>
     </Grid>
 </UserControl>

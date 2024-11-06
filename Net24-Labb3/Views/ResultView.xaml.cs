@@ -1,5 +1,4 @@
-﻿using Net24_Labb3.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +16,11 @@ using System.Windows.Shapes;
 namespace Net24_Labb3.Views
 {
     /// <summary>
-    /// Interaction logic for PlayView.xaml
+    /// Interaction logic for ResultView.xaml
     /// </summary>
-    public partial class PlayView : UserControl
+    public partial class ResultView : UserControl
     {
-        public PlayView()
+        public ResultView()
         {
             InitializeComponent();
         }

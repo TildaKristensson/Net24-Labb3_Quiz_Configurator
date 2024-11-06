@@ -25,5 +25,10 @@ namespace Net24_Labb3
             DataContext = new MainWindowViewModel();
            
         }
+
+        private void PlayModeView_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

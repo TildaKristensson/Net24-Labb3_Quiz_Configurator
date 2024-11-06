@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Net24_Labb3.Model
 {
-    enum Difficulty { Easy, Medium, Hard };
-    class QuestionPack
+    enum Difficulty { Easy, Medium, Hard }
+    internal class QuestionPack
     {
         public QuestionPack(string name, Difficulty difficulty = Difficulty.Medium, int timeLimitInSeconds = 30)
         {
@@ -24,5 +24,6 @@ namespace Net24_Labb3.Model
         public int TimeLimitInSeconds { get; set; }
 
         public List<Question> Questions { get; set; }
+
     }
 }

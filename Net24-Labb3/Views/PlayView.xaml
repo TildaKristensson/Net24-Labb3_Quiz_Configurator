@@ -3,52 +3,66 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Net24_Labb3.Views"
+             xmlns:local="clr-namespace:Net24_Labb3.Views" 
+             xmlns:viewmodel="clr-namespace:Net24_Labb3.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-
-        <Label x:Name="PlayViewQuestion" 
-               Content="Här ska frågan vara"
+        <Grid>
+            <Label x:Name="PlayViewQuestion" 
+               Content="{Binding PlayViewModel.PlayingQuestion.Query}"
                HorizontalAlignment="Center"
                VerticalAlignment="Top"
                FontSize="25"
-               FontFamily="Bell MT" Margin="0,54,0,0"/>
+               FontFamily="Bell MT" Margin="0,54,0,0"
+                   Width="300"
+                   Height="70"/>
 
-        <Label x:Name="PlayViewWhichQuestion"
-               Content="Question nr of nr"
-               HorizontalAlignment="Center" 
-               Margin="0,113,0,302"
+            <Label x:Name="PlayViewWhichQuestion"
+               Content="Question nr of nr" 
                FontSize="15"
-               FontFamily="Bell MT"/>
+               FontFamily="Bell MT" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,113,0,0"/>
+            <TextBlock
+                Width="80"  
+                Height="80"
+                FontSize="20"
+                FontWeight="Bold"
+                Text="{Binding PlayViewModel.TimeText}" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" 
+                Margin="710,18,0,0"/>
+        </Grid>
+
 
         <Button x:Name="AnswerOptionButton1"
-                Content=""
+                Content="{}"
                 Command=""
                 FontFamily="Bell MT"
-                Margin="198,180,422,180"
-                Width="180" Height="90"/>
+                Margin="130,165,370,180"
+                Width="150" Height="70"
+                TabIndex="1"/>
 
         <Button x:Name="AnswerOptionButton2"
                 Content="Option 2"
                 FontFamily="Bell MT"
-                Margin="422,180,198,180"
-                Width="180" Height="90"/>
+                Margin="370,165,130,180"
+                Width="150" Height="70"
+                TabIndex="2"/>
 
         <Button x:Name="AnswerOptionButton3"
                 Content="Option 3"
                 FontFamily="Bell MT"
-                Margin="198,304,422,56"
-                Width="180" Height="90"/>
+                Margin="130,300,370,20"
+                Width="150" Height="70"
+                TabIndex="3"/>
 
         <Button x:Name="AnswerOptionButton4"
                 Content="Option 4"
                 FontFamily="Bell MT"
-                Margin="422,304,198,56"
-                Width="180" Height="90"/>
-
-        <!--lägg till timer i översta högre hörnet-->
+                Margin="370,300,130,20"
+                Width="150" Height="70"
+                TabIndex="4"/>
 
     </Grid>
 </UserControl>

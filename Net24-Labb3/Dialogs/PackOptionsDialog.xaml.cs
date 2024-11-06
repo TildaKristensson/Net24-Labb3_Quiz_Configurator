@@ -24,7 +24,7 @@ namespace Net24_Labb3.Dialogs
         {
             InitializeComponent();
 
-            DataContext = new MainWindowViewModel();
+            DataContext = App.Current.MainWindow.DataContext;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Net24_Labb3.ViewModel
 {
@@ -19,6 +20,8 @@ namespace Net24_Labb3.ViewModel
         public DelegateCommand AddNewQuestionCommand { get; }
 
         public DelegateCommand RemoveQuestionCommand { get; }
+
+        public DelegateCommand RemovePackCommand { get; }
 
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }
 
@@ -98,7 +101,18 @@ namespace Net24_Labb3.ViewModel
             AddNewQuestionCommand = new DelegateCommand(AddNewQuestion, CanAddNewQuestion);
 
             RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
+
+            RemovePackCommand = new DelegateCommand(RemovePack);
+
+           
         }
+
+        private void RemovePack(object obj)
+        {
+            mainWindowViewModel?.Packs.Remove(ActivePack);
+            RemovePackCommand.RaiseCanExecuteChanged();
+        }
+
         private bool CanRemoveQuestion(object? arg) { return true; }
         private void RemoveQuestion(object obj)
         {
@@ -109,6 +123,7 @@ namespace Net24_Labb3.ViewModel
         private bool CanAddNewQuestion(object? arg) { return true; }
         private void AddNewQuestion(object obj)
         {
+            mainWindowViewModel.IsConfigurationMode = true;
             if (ActiveQuestion != null)
             {
                 var AddQuestion = new Question(

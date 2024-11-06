@@ -13,10 +13,10 @@ namespace Net24_Labb3.ViewModel
 {
     class QuestionPackViewModel : ViewModelBase
     {
-        private readonly QuestionPack model;
+        private readonly Model.QuestionPack model;
 
         //public DelegateCommand NewCommand => new DelegateCommand(execute => { }, canExecute => { return true; });
-        public QuestionPackViewModel(QuestionPack model)
+        public QuestionPackViewModel(Model.QuestionPack model)
         {
             this.model = model;
             this.Questions = new ObservableCollection<Question>(model.Questions);

@@ -11,16 +11,34 @@
     <UserControl.Resources>
         <SolidColorBrush x:Key="ButtonBackground" Color="LightSteelBlue" />
     </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="F" Modifiers="Ctrl" Command="local:MenuView.OpenFileCommand" />
+        <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.OpenCreatePackDialogCommand}" />
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding Packs}" />
+        <KeyBinding Key="D" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.RemovePackCommand}" />
+        <KeyBinding Key="X" Modifiers="Ctrl" Command="" />
+        <KeyBinding Key="A" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.AddNewQuestionCommand}" />
+        <KeyBinding Key="R" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.RemoveQuestionCommand}" />
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding ConfigurationViewModel.OpenPackOptionsCommand}" />
+        <KeyBinding Key="P" Modifiers="Ctrl" Command="{Binding ShowPlayViewCommand}" />
+        <KeyBinding Key="E" Modifiers="Ctrl" Command="{Binding EndPlayViewCommand}" />
+        <KeyBinding Key="F" Modifiers="Ctrl" Command="" />
+    </UserControl.InputBindings>
     
     <Grid>
 
         <Menu Background="{StaticResource ButtonBackground}">
-            <MenuItem Header="_File">
+            <MenuItem Header="_File" x:Name="FileMenuItem" TabIndex="1">
                 <MenuItem Header="_New Question Pack" 
                           Icon="{fa:Icon FolderOpen}"
-                          Command="{Binding ConfigurationViewModel.OpenCreatePackDialogCommand}"/>
+                          InputGestureText="Ctrl+N"
+                          Command="{Binding ConfigurationViewModel.OpenCreatePackDialogCommand}"
+                          TabIndex="1"/>
                 <MenuItem Header="_Select Question Pack"
-                          Icon="{fa:Icon HandPointer}" >
+                          Icon="{fa:Icon HandPointer}" 
+                          InputGestureText="Ctrl+S"
+                          TabIndex="2">
                     <MenuItem.ItemsSource>
                         <Binding Path="Packs" />
                     </MenuItem.ItemsSource>
@@ -34,37 +52,56 @@
                 </MenuItem>
                 <MenuItem Header="_Delete Question Pack"
                           Icon="{fa:Icon Trash}"
-                          Command="" />
+                          InputGestureText="Ctrl+D"
+                          Command="{Binding ConfigurationViewModel.RemovePackCommand}"
+                          TabIndex="3"/>
                 <Separator/>
                 <MenuItem Header="_Import Questions" 
-                          Icon="{fa:Icon CloudArrowDown}"/>
+                          Icon="{fa:Icon CloudArrowDown}"
+                          InputGestureText="Ctrl+I"
+                          TabIndex="4"/>
                 <Separator/>
                 <MenuItem Header="E_xit"
-                          Icon="{fa:Icon PersonThroughWindow}"/>
+                          Icon="{fa:Icon PersonThroughWindow}"
+                          InputGestureText="Ctrl+X"
+                          TabIndex="5"/>
             </MenuItem>
 
-            <MenuItem Header="_Edit">
+            <MenuItem Header="_Edit" TabIndex="2">
                 <MenuItem Header="_Add Question"
                           Icon="{fa:Icon CirclePlus}"
-                          Command="{Binding ConfigurationViewModel.AddNewQuestionCommand}"/>
+                          InputGestureText="Ctrl+A"
+                          Command="{Binding ConfigurationViewModel.AddNewQuestionCommand}"
+                          TabIndex="1"/>
                 <MenuItem Header="_Remove Question"
                           Icon="{fa:Icon CircleMinus}"
-                          Command="{Binding ConfigurationViewModel.RemoveQuestionCommand}"/>
+                          InputGestureText="Ctrl+R"
+                          Command="{Binding ConfigurationViewModel.RemoveQuestionCommand}"
+                          TabIndex="2"/>
                 <MenuItem Header="Pack _Options" 
                           Icon="{fa:Icon Sliders}" 
                           InputGestureText="Ctrl+O" 
-                          Command="{Binding ConfigurationViewModel.OpenPackOptionsCommand}" />
+                          Command="{Binding ConfigurationViewModel.OpenPackOptionsCommand}" 
+                          TabIndex="3"/>
             </MenuItem>
 
-            <MenuItem Header="_View" >
+            <MenuItem Header="_View" TabIndex="3">
                 <MenuItem Header="_Play" 
                           Icon="{fa:Icon Gamepad}" 
-                          Command="{Binding ShowPlayViewCommand}"/>
+                          InputGestureText="Ctrl+P"
+                          Command="{Binding ShowPlayViewCommand}"
+                          TabIndex="1"/>
                 <MenuItem Header="_Edit" 
-                          Icon="{fa:Icon Gears}" />
+                          Icon="{fa:Icon Gears}" 
+                          InputGestureText="Ctrl+E"
+                          Command="{Binding EndPlayViewCommand}"
+                          TabIndex="2"/>
                 <Separator/>
                 <MenuItem Header="_Fullscreen" 
-                          Icon="{fa:Icon Expand}" />
+                          Icon="{fa:Icon Expand}"
+                          InputGestureText="Ctrl+F"
+                          Click="FullScreen_Click"
+                          TabIndex="3"/>
             </MenuItem>
         </Menu>
     </Grid>

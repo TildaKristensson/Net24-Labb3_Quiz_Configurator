@@ -1,9 +1,11 @@
 ﻿using Net24_Labb3.Command;
 using Net24_Labb3.Dialogs;
+using Net24_Labb3.FileHandlers;
 using Net24_Labb3.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,12 +18,15 @@ namespace Net24_Labb3.ViewModel
 
         public PlayViewModel PlayViewModel { get; }
 
+        private JsonFileHandler _jsonFileHandler;
+
         public ConfigurationViewModel ConfigurationViewModel { get; }
 
         //public bool VisibleWindow { get; set; }
 
-
+        private bool _showPackQuestions;
         private bool _isPlayMode;
+        private bool _isConfigurationMode;
 
         //public DelegateCommand ShowConfigurationViewCommand;
 
@@ -77,7 +82,28 @@ namespace Net24_Labb3.ViewModel
             }
         }
 
-        public bool IsConfigurationMode => !IsPlayMode;
+        public bool IsConfigurationMode 
+        { 
+            get { return _isConfigurationMode; }
+            set
+            {
+                _isConfigurationMode = value;
+                RaisePropertyChanged(nameof(IsConfigurationMode));
+                RaisePropertyChanged(nameof(IsPlayMode));
+            } 
+        }
+
+        public bool ShowPackQuestions
+        {
+            get { return _showPackQuestions; }
+            set
+            {
+                _showPackQuestions = value;
+                RaisePropertyChanged(nameof(ShowPackQuestions));
+            }
+
+        }
+
 
         public DelegateCommand ShowPlayViewCommand { get; }
         public DelegateCommand EndPlayViewCommand { get; }
@@ -90,11 +116,17 @@ namespace Net24_Labb3.ViewModel
 
             //ShowConfigurationViewCommand = new DelegateCommand(ShowConfigurationView);
             //ShowPlayViewCommand = new DelegateCommand(ShowPlayMode);
+            _jsonFileHandler = new JsonFileHandler();
+            //_jsonFileHandler.AddOrUpdateQuestionPack(new QuestionPack("hej", Difficulty.Medium, 30)
+            //{
 
+            //}).GetAwaiter().GetResult();
             ShowPlayViewCommand = new DelegateCommand(_ => StartPlay());
             EndPlayViewCommand = new DelegateCommand(_ => EndPlay());
 
+            ShowPackQuestions = true;
             IsPlayMode = false;
+            IsConfigurationMode = false;
 
             Packs = new ObservableCollection<QuestionPackViewModel>();
 
@@ -114,10 +146,15 @@ namespace Net24_Labb3.ViewModel
         private void StartPlay()
         {
             IsPlayMode = true;
+            IsConfigurationMode = false;
+            ShowPackQuestions = false;
+            PlayViewModel.StartQuiz(ActivePack);
         }
         private void EndPlay()
         {
             IsPlayMode = false;
+            IsConfigurationMode = true;
+            ShowPackQuestions = true;
         }
 
         
@@ -135,10 +172,8 @@ namespace Net24_Labb3.ViewModel
         private void SetActivePack(object obj)
         {
             ActivePack = (QuestionPackViewModel)obj;
-            //if (obj is QuestionPackViewModel activePack)
-            //{
-            //    ActivePack = activePack;
-            //}
+
+            //_jsonFileHandler.GetQuestionPacksFromFile("packName").GetAwaiter().GetResult();
 
             RaisePropertyChanged(nameof(ActivePack));
         }
@@ -147,8 +182,10 @@ namespace Net24_Labb3.ViewModel
 
         private void CreatePack(object obj)
         {
+            var questionPack = new QuestionPackViewModel(new QuestionPack(NewPack.Name, NewPack.Difficulty, NewPack.TimeLimitInSeconds));
+            Packs.Add(questionPack);
 
-            Packs.Add(new QuestionPackViewModel(new QuestionPack(NewPack.Name)));
+            _jsonFileHandler.AddOrUpdateQuestionPack(questionPack).GetAwaiter().GetResult();
 
             CreatePackCommand.RaiseCanExecuteChanged();
         }

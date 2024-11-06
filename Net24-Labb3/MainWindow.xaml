@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Net24_Labb3" 
         xmlns:views="clr-namespace:Net24_Labb3.Views" 
         xmlns:viewmodel="clr-namespace:Net24_Labb3.ViewModel" 
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="Quilda Quiztensson Quiz Quack" Height="450" Width="800">
 
@@ -18,14 +19,94 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+
         <views:MenuView Grid.Row="0" />
 
-        <views:ConfigurationView x:Name="ConfigModeView" Grid.Row="1" 
+        <Grid Grid.Row="1" 
+              Visibility="{Binding ShowPackQuestions, Converter={StaticResource boolToVisibilityConverter}}"
+              VerticalAlignment="Top" 
+              Margin="1,1,220,1" 
+              Height="50" Width="150" 
+              HorizontalAlignment="Center">
+            
+                <Button x:Name="ConfigPackButton"
+                        Width="20"
+                        Height="20" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Top"
+                        Margin="20, 12, 80, 5" 
+                        Command="{Binding ConfigurationViewModel.OpenPackOptionsCommand}">
+                            <Button.Content>
+                                <fa:IconBlock Icon="Sliders" />
+                            </Button.Content>
+                </Button>
+
+                <Button x:Name="ConfigAddButton"
+                        Grid.Column="0"
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0, 12, 50, 5" 
+                        Command="{Binding ConfigurationViewModel.AddNewQuestionCommand}">
+                            <Button.Content>
+                                <fa:IconBlock Icon="Plus" />
+                            </Button.Content>
+                </Button>
+
+                <Button x:Name="ConfigRemoveButton"
+                        Width="20"
+                        Height="20" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Top"
+                        Margin="20, 12, 20, 5"
+                        Command="{Binding ConfigurationViewModel.RemoveQuestionCommand}">
+                            <Button.Content>
+                                <fa:IconBlock Icon="Minus" />
+                            </Button.Content>
+                </Button>
+
+
+        </Grid>
+
+        <StackPanel  HorizontalAlignment="Left" Grid.Row="1" 
+                     Visibility="{Binding ShowPackQuestions, Converter={StaticResource boolToVisibilityConverter}}">
+                <Label x:Name="QuestionPackName"
+                       FontWeight="Bold"
+                       Margin="10"
+                       Width="200"
+                       HorizontalAlignment="Left"
+                       Content="{Binding ActivePack.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <ListBox x:Name="QueryListBox"
+                         DataContext="{Binding ConfigurationViewModel}"
+                        Grid.Column="0"
+                        Width="350"
+                        Height="370"
+                        Margin="5"
+                        Padding="5" SelectionMode="Single"
+                        TabIndex="1"
+                        SelectedItem="{Binding ActiveQuestion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ItemsSource="{Binding ActivePack.Questions}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="Question:"
+                                            FontWeight="Bold" />
+                                        <TextBlock Text="{Binding Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                </ListBox>
+
+        </StackPanel>
+
+        <views:ConfigurationView x:Name="ConfigModeView" Grid.Row="1" Margin="10"
                                  Visibility="{Binding IsConfigurationMode, Converter={StaticResource boolToVisibilityConverter}}"/>
 
 
         <views:PlayView x:Name="PlayModeView" Grid.Row="1"
-                        Visibility="{Binding IsPlayMode, Converter={StaticResource boolToVisibilityConverter}}" />
+                        Visibility="{Binding IsPlayMode, Converter={StaticResource boolToVisibilityConverter}}" Loaded="PlayModeView_Loaded" />
 
     </Grid>
 </Window>

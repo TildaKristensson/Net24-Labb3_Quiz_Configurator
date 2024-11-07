@@ -6,71 +6,81 @@
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:viewmodel="clr-namespace:Net24_Labb3.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="550" d:DesignWidth="900">
+
+ 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
 
-        
 
-        <StackPanel DataContext="{Binding ConfigurationViewModel}" Grid.Column="1" >
+
+        <StackPanel DataContext="{Binding ConfigurationViewModel}" Grid.Column="1" Grid.Row="0" >
             <Label Content="Question:" 
                    FontWeight="Bold"
-                   Margin="50, 30, 50, 10" />
+                   Margin="50, 10, 50, 10" />
 
             <TextBox Text="{Binding ActiveQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                     Width="300"
-                     Height="80"
-                     Padding="5" 
+                     Width="350"
+                     Height="90"
+                      
                      TabIndex="2"/>
-
+        </StackPanel>
+        
+        <StackPanel DataContext="{Binding ConfigurationViewModel}" Grid.Column="1" Grid.Row="1" >
             <Label Content="Correct Answer:"
                    FontWeight="Bold"
-                   Margin="50, 30, 50, 0" />
+                   Margin="50, 20, 50, 0" />
 
             <TextBox x:Name="CorrectAnswerTextBox" 
                      Text="{Binding ActiveQuestion.CorrectAnswer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Width="300"
-                     Height="20"
+                     Width="350"
+                     Height="22"
                      Padding="2"
                      TabIndex="3"/>
 
             <Label Content="First Incorrect Answer:"
                    FontWeight="Bold"
-                    Margin="50, 5, 50, 0" />
+                    Margin="50, 15, 50, 0" />
 
             <TextBox x:Name="FirstIncorrectAnswerTextBox" 
                      Text="{Binding ActiveQuestion.IncorrectAnswers[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Width="300"
-                     Height="20"
+                     Width="350"
+                     Height="22"
                      Padding="2"
                      TabIndex="4"/>
 
             <Label Content="Second Incorrect Answer:"
                    FontWeight="Bold"
-                    Margin="50, 5, 50, 0" />
+                    Margin="50, 15, 50, 0" />
 
             <TextBox x:Name="SecondIncorrectAnswerTextBox" 
                      Text="{Binding ActiveQuestion.IncorrectAnswers[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Width="300"
-                     Height="20"
+                     Width="350"
+                     Height="22"
                      Padding="2"
                      TabIndex="5"/>
 
             <Label Content="Third Incorrect Answer:"
                    FontWeight="Bold"
-                   Margin="50, 5, 50, 0" />
+                   Margin="50, 15, 50, 0" />
 
             <TextBox x:Name="ThirdIncorrectAnswerTextBox" 
                      Text="{Binding ActiveQuestion.IncorrectAnswers[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Width="300"
-                     Height="20"
+                     Width="350"
+                     Height="22"
                      Padding="2"
                      TabIndex="6"/>
 
-            <Button Width="80" Height="30" Content="Save Question"
+            <Button Width="80" Height="30" 
+                    Margin="15"
+                    Content="Save Question"
                     Command="{Binding SaveQuestionCommand}"/>
 
         </StackPanel>

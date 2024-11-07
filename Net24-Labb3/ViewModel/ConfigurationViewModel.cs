@@ -137,20 +137,7 @@ namespace Net24_Labb3.ViewModel
         private void AddNewQuestion(object obj)
         {
             mainWindowViewModel.IsConfigurationMode = true;
-            //if (ActiveQuestion != null)
-            //{
-            //    var AddQuestion = new Question(
-                
-            //    ActiveQuestion.Query,
-            //    ActiveQuestion.CorrectAnswer,
-            //    ActiveQuestion.IncorrectAnswers);
-
-            //    ActivePack?.Questions.Add(AddQuestion);
-            //}
-            //else
-            //{
-                ActivePack?.Questions.Add(new Question("New Question", string.Empty, new string[] {"", "", ""}));
-            //}
+            ActivePack?.Questions.Add(new Question("New Question", string.Empty, new string[] {"", "", ""}));
 
             AddNewQuestionCommand.RaiseCanExecuteChanged();
             

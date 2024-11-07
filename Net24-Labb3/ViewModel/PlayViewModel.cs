@@ -162,7 +162,7 @@ namespace Net24_Labb3.ViewModel
         private string _resultText;
         public string ResultText
         {
-            get => $"Du svarade rätt på {Score} av {TotalQuestions} frågor! :)";
+            get => $"You answered {Score} of {TotalQuestions} questions correct! :)";
             set
             {
                 RaisePropertyChanged(nameof(_resultText));
@@ -296,10 +296,6 @@ namespace Net24_Labb3.ViewModel
             RaisePropertyChanged(nameof(QuestionCounterText));
 
         }
-
-
-
-
 
         private void DispatcherTimer_Tick(object? sender, EventArgs e)
         {

@@ -13,16 +13,16 @@ namespace Net24_Labb3.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value?.ToString();
+            return Enum.GetValues(typeof(Difficulty)).Cast<Difficulty>().ToList();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is string stringValue && Enum.TryParse(typeof(Difficulty), stringValue, out var result))
-            {
-                return result;
+            if(value is Difficulty difficulty)
+        {
+                return difficulty.ToString();
             }
-            return Difficulty.Medium;
+            return Difficulty.Medium.ToString();
         }
     }
 }

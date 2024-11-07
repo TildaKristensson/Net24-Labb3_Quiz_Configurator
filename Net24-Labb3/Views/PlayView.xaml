@@ -11,22 +11,25 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid>
             <Label x:Name="PlayViewQuestion" 
-               Content="{Binding PlayViewModel.PlayingQuestion.Query}"
-               HorizontalAlignment="Center"
+               HorizontalAlignment="Stretch"
                VerticalAlignment="Top"
                FontSize="25"
-               FontFamily="Bell MT" Margin="0,54,0,0"
-                   Width="300"
-                   Height="70"/>
+               FontFamily="Bell MT" Margin="0,30,0,0"
+               Width="427"
+               Height="90">
+                <TextBlock Text="{Binding PlayViewModel.PlayingQuestion.Query}" 
+                           TextWrapping="Wrap"/>
+            </Label>
 
             <Label x:Name="PlayViewWhichQuestion"
                Content="{Binding PlayViewModel.QuestionCounterText}" 
                FontSize="15"
-               FontFamily="Bell MT" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,113,0,0"/>
+               FontFamily="Bell MT" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,160,0,0"/>
+            
             <TextBlock
                 Width="80"  
                 Height="80"
@@ -38,14 +41,23 @@
                 Margin="710,18,0,0"/>
         </Grid>
 
+        <Grid>
+            <TextBlock Text="Time has run out, move to next question!"
+                   Width="500"
+                   FontWeight="Bold"
+                   FontFamily="Bell MT"
+                   Visibility="{Binding PlayViewModel.ShowOutOfTimeText, Converter={StaticResource boolToVisibilityConverter}}" 
+                   Foreground="#FF0F1DF7" 
+                   FontSize="22" 
+                   Margin="181,292,119,130"/>
 
-        <Button x:Name="AnswerOptionButton1"
+            <Button x:Name="AnswerOptionButton1"
                 Content="{Binding PlayViewModel.Answers[0].AnswerOption}"
                 Command="{Binding PlayViewModel.ValidateAnswerCommand}"
                 CommandParameter="{Binding PlayViewModel.Answers[0]}"
                 Background="{Binding PlayViewModel.AnswerOptionOneBackgroundColor}"
                 FontFamily="Bell MT"
-                Margin="130,165,370,180"
+                Margin="130,165,370,100"
                 Width="150" Height="70"
                 TabIndex="1"/>
 
@@ -55,7 +67,7 @@
                 CommandParameter="{Binding PlayViewModel.Answers[1]}"
                 Background="{Binding PlayViewModel.AnswerOptionTwoBackgroundColor}"
                 FontFamily="Bell MT"
-                Margin="370,165,130,180"
+                Margin="370,165,130,100"
                 Width="150" Height="70"
                 TabIndex="2"/>
 
@@ -79,13 +91,8 @@
                 Width="150" Height="70"
                 TabIndex="4"/>
 
+        </Grid>
 
-        <TextBlock Text="Time has run out, move to next question!"
-                   Width="500" Height="100"
-                   FontWeight="Bold"
-                   
-                   FontFamily="Bell MT"
-                   Visibility="{Binding PlayViewModel.ShowOutOfTimeText, Converter={StaticResource boolToVisibilityConverter}}" Foreground="#FF0F1DF7" FontSize="22" Margin="205,140,95,210"/>
 
         <Button Content="Next Question"
         Visibility="{Binding PlayViewModel.NextQuestionAvailable, Converter={StaticResource boolToVisibilityConverter}}"

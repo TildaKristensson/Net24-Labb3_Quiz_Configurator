@@ -27,16 +27,11 @@
             <Label Content="Difficulty:"
                    Margin="10"
                    FontWeight="Bold" />
-            
+
             <ComboBox x:Name="NewQuestionPackComboBox" 
                         Margin="10 0 10 0" 
-                        SelectedItem="{Binding NewPack.Difficulty, Converter={StaticResource DifficultyConverter}}">
-                <ComboBoxItem x:Name="DifficultyEasy"
-                                Content="Easy" />
-                <ComboBoxItem x:Name="DifficultyMedium"
-                                Content="Medium" />
-                <ComboBoxItem x:Name="DifficultyHard"
-                                Content="Hard" />
+                        ItemsSource="{Binding Path=., Converter={StaticResource DifficultyConverter}}"
+                        SelectedItem="{Binding NewPack.Difficulty}">
             </ComboBox>
 
             <Grid>

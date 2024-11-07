@@ -62,16 +62,6 @@ namespace Net24_Labb3.ViewModel
             }
         }
 
-        //public bool IsConfigurationMode 
-        //{ 
-        //    get { return _isConfigurationMode; }
-        //    set
-        //    {
-        //        _isConfigurationMode = value;
-        //        RaisePropertyChanged(nameof(IsConfigurationMode));
-        //    }
-        //}
-
         public bool IsPlayMode 
         { 
             get { return _isPlayMode; }
@@ -166,6 +156,7 @@ namespace Net24_Labb3.ViewModel
             CreatePackCommand = new DelegateCommand(CreatePack, CanCreatePack);
         }
 
+
         private void UpdatePack(object obj)
         {
             Task.Run(() => _jsonFileHandler.AddOrUpdateQuestionPack(ActivePack));
@@ -183,6 +174,7 @@ namespace Net24_Labb3.ViewModel
         private void EndPlay()
         {
             IsPlayMode = false;
+            IsResultMode = false;
             IsConfigurationMode = true;
             ShowPackQuestions = true;
         }

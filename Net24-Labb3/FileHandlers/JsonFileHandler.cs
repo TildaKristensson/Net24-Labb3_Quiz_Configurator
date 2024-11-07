@@ -20,19 +20,19 @@ namespace Net24_Labb3.FileHandlers
         public JsonFileHandler()
         {
             _filePath = Directory.GetCurrentDirectory() + "\\Packs1.txt";
-            //File.SetAttributes(filePath, FileAttributes.Normal);
             EnsureDirectoryAndFileExists();
 
             _options = new JsonSerializerOptions
             {
-                IncludeFields = true, // Includes both fields and properties in serialization and deserialization
-                PropertyNameCaseInsensitive = true // Optional: makes matching case-insensitive
+                IncludeFields = true, 
+                PropertyNameCaseInsensitive = true 
             };
         }
 
         //för att lägga till eller uppdatera ett questionPack
         public async Task AddOrUpdateQuestionPack(QuestionPackViewModel questionPack)
         {
+            //Hämtar det som finns
             var fileContent = await File.ReadAllTextAsync(_filePath);
             var models = JsonSerializer.Deserialize<ObservableCollection<Model.QuestionPack>>(fileContent, _options);
             var viewModels = models.Select(model => new QuestionPackViewModel(model)).ToList();
@@ -40,6 +40,7 @@ namespace Net24_Labb3.FileHandlers
 
             var packExistsAtIndex = -1;
 
+            //kollar om den vi ska lägga till eller uppdatera redan finns
             for (int i = 0; i < viewModelsObservableCollection.Count; i++)
             {
                 if (viewModelsObservableCollection[i].Name.Equals(questionPack.Name, StringComparison.CurrentCultureIgnoreCase))
@@ -48,15 +49,18 @@ namespace Net24_Labb3.FileHandlers
                 }
             }
 
+            //om den redan finns så uppdaterar vi den
             if (packExistsAtIndex >= 0)
             {
                 viewModelsObservableCollection[packExistsAtIndex] = questionPack;
             }
             else
             {
+                //annars lägger vi till den
                 viewModelsObservableCollection.Add(questionPack);
             }
 
+            //vi gör om det till string igen
             var newFileCOntent = JsonSerializer.Serialize(viewModelsObservableCollection);
             File.WriteAllText(_filePath, newFileCOntent);
         }
@@ -79,19 +83,19 @@ namespace Net24_Labb3.FileHandlers
         }
 
         //för att hämta en enskild questionpack "by name"
-        public async Task<QuestionPackViewModel> GetQuestionPackByName(string packName)
-        {
-            var fileContent = await File.ReadAllTextAsync(_filePath);
-            var questionPacks = JsonSerializer.Deserialize<ObservableCollection<QuestionPackViewModel>>(fileContent, _options);
+        //public async Task<QuestionPackViewModel> GetQuestionPackByName(string packName)
+        //{
+        //    var fileContent = await File.ReadAllTextAsync(_filePath);
+        //    var questionPacks = JsonSerializer.Deserialize<ObservableCollection<QuestionPackViewModel>>(fileContent, _options);
 
-            foreach (var questionPack in questionPacks)
-            {
-                if(questionPack.Name.Equals(packName, StringComparison.InvariantCultureIgnoreCase))
-                    return questionPack;
-            }
+        //    foreach (var questionPack in questionPacks)
+        //    {
+        //        if(questionPack.Name.Equals(packName, StringComparison.InvariantCultureIgnoreCase))
+        //            return questionPack;
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
         //Hämtar alla questionPacks
         public async Task<ObservableCollection<QuestionPackViewModel>> GetQuestionPacksFromFile()

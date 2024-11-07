@@ -14,15 +14,19 @@
         </Grid.Resources>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="3" Width="70" Height="30" Content="Save" Margin="115,21,115,20"
-                Command="{Binding UpdatePackCommand}"/>
-
+        <StackPanel Grid.Row="3">
+            <Button  Content="Save"
+                     Margin="20, 10, 20, 50"
+                Command="{Binding UpdatePackCommand}"
+                Click="Button_Click"/>
+        </StackPanel>
+        
         <StackPanel Grid.Row="0">
             <Label Content="Pack Name:"
                    FontWeight="Bold" 
@@ -30,24 +34,17 @@
             <TextBox x:Name="PackOptionsTextBox"
                      Text="{Binding ActivePack.Name}"
                      Margin="10 0 10 0"
-                     Height="20"
-                     />
-
+                     Height="20" />
         </StackPanel>
 
         <StackPanel Grid.Row="1">
             <Label Content="Difficulty:"
                    Margin="10"
                    FontWeight="Bold" />
-            <ComboBox x:Name="PackOptionsComboBox" 
-                      SelectedItem="{Binding ActivePack.Difficulty, Converter={StaticResource DifficultyConverter}}">
-                <ComboBoxItem x:Name="DifficultyEasy"
-                              Content="Easy" />
-                <ComboBoxItem x:Name="DifficultyMedium"
-                              Content="Medium" />
-                <ComboBoxItem x:Name="DifficultyHard"
-                              Content="Hard" />
-            </ComboBox>
+            <ComboBox x:Name="PackOptionsComboBox"
+                      Margin="10, 0,10, 20"
+                      ItemsSource="{Binding Path=., Converter={StaticResource DifficultyConverter}}"
+                      SelectedItem="{Binding ActivePack.Difficulty}"/>
 
         </StackPanel>
 
@@ -59,7 +56,6 @@
             <TextBlock Width="30" Height="20"
                        HorizontalAlignment="Right"
                        Margin="0,16,65,35"
-                       FontWeight="Bold"
                        Text="{Binding ElementName=PackOptionsSlider, Path=Value}" RenderTransformOrigin="0.534,0.547"/>
 
             <TextBlock Width="55" Height="20"

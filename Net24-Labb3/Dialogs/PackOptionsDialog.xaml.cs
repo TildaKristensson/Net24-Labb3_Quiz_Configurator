@@ -26,5 +26,10 @@ namespace Net24_Labb3.Dialogs
 
             DataContext = App.Current.MainWindow.DataContext;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

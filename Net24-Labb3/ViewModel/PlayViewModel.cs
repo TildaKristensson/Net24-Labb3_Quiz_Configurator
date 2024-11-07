@@ -19,7 +19,6 @@ namespace Net24_Labb3.ViewModel
     {
         private readonly MainWindowViewModel? mainWindowViewModel;
 
-
         public DelegateCommand ValidateAnswerCommand { get; }
         public DelegateCommand MoveToNextQuestionCommand { get; }
 
@@ -28,18 +27,6 @@ namespace Net24_Labb3.ViewModel
         private QuestionPackViewModel _playingPack;
 
         private Question _playingQuestion;
-
-        private bool _showOutOfTimeText = false;
-        public bool ShowOutOfTimeText
-        {
-            get => _showOutOfTimeText;
-            set
-            {
-                _showOutOfTimeText = value;
-                RaisePropertyChanged(nameof(ShowOutOfTimeText));
-                RaisePropertyChanged();
-            }
-        }
 
         private bool _nextQuestionAvailable;
         public bool NextQuestionAvailable
@@ -53,7 +40,12 @@ namespace Net24_Labb3.ViewModel
             }
         }
 
-        private Brush _answerOptionOneBackgroundColor = Brushes.LightGray;
+        public bool IsPlayMode
+        {
+            get { return mainWindowViewModel.IsPlayMode; }
+        }
+
+        private Brush _answerOptionOneBackgroundColor = Brushes.Ivory;
         public Brush AnswerOptionOneBackgroundColor
         {
             get => _answerOptionOneBackgroundColor;
@@ -65,7 +57,7 @@ namespace Net24_Labb3.ViewModel
             }
         }
 
-        private Brush _answerOptionTwoBackgroundColor = Brushes.LightGray;
+        private Brush _answerOptionTwoBackgroundColor = Brushes.Ivory;
         public Brush AnswerOptionTwoBackgroundColor
         {
             get => _answerOptionTwoBackgroundColor;
@@ -77,7 +69,7 @@ namespace Net24_Labb3.ViewModel
             }
         }
 
-        private Brush _answerOptionThreeBackgroundColor = Brushes.LightGray;
+        private Brush _answerOptionThreeBackgroundColor = Brushes.Ivory;
         public Brush AnswerOptionThreeBackgroundColor
         {
             get => _answerOptionThreeBackgroundColor;
@@ -89,7 +81,7 @@ namespace Net24_Labb3.ViewModel
             }
         }
 
-        private Brush _answerOptionFourBackgroundColor = Brushes.LightGray;
+        private Brush _answerOptionFourBackgroundColor = Brushes.Ivory;
         public Brush AnswerOptionFourBackgroundColor
         {
             get => _answerOptionFourBackgroundColor;
@@ -176,6 +168,8 @@ namespace Net24_Labb3.ViewModel
             {
                 mainWindowViewModel.IsResultMode = true;               
                 mainWindowViewModel.IsPlayMode = false;
+                NextQuestionAvailable = false;
+                ResetAllAnswerColors();
 
                 return;
             }
@@ -192,7 +186,6 @@ namespace Net24_Labb3.ViewModel
             RaisePropertyChanged(nameof(AnswerOptionThreeBackgroundColor));
             RaisePropertyChanged(nameof(AnswerOptionFourBackgroundColor));
             NextQuestionAvailable = false;
-            ShowOutOfTimeText = false;
 
             time = TimeSpan.FromSeconds(_playingPack.TimeLimitInSeconds);
             dispatcherTimer = new DispatcherTimer();
@@ -227,46 +220,44 @@ namespace Net24_Labb3.ViewModel
 
         private void ResetAllAnswerColors()
         {
-            AnswerOptionOneBackgroundColor = Brushes.LightGray;
-            AnswerOptionTwoBackgroundColor = Brushes.LightGray;
-            AnswerOptionThreeBackgroundColor = Brushes.LightGray;
-            AnswerOptionFourBackgroundColor = Brushes.LightGray;
+            AnswerOptionOneBackgroundColor = Brushes.Ivory;
+            AnswerOptionTwoBackgroundColor = Brushes.Ivory;
+            AnswerOptionThreeBackgroundColor = Brushes.Ivory;
+            AnswerOptionFourBackgroundColor = Brushes.Ivory;
         }
 
         private void SetIncorrectAnswerColor(Answer answer)
         {
             if (answer.AnswerOrderId == 1)
-                AnswerOptionOneBackgroundColor = Brushes.Red;
+                AnswerOptionOneBackgroundColor = Brushes.OrangeRed;
 
             if (answer.AnswerOrderId == 2)
-                AnswerOptionTwoBackgroundColor = Brushes.Red;
+                AnswerOptionTwoBackgroundColor = Brushes.OrangeRed;
 
             if (answer.AnswerOrderId == 3)
-                AnswerOptionThreeBackgroundColor = Brushes.Red;
+                AnswerOptionThreeBackgroundColor = Brushes.OrangeRed;
 
             if (answer.AnswerOrderId == 4)
-                AnswerOptionFourBackgroundColor = Brushes.Red;
+                AnswerOptionFourBackgroundColor = Brushes.OrangeRed;
         }
 
         private void SetCorrectAnswerColor(Answer answer)
         {
             if (answer.AnswerOrderId == 1)
-                AnswerOptionOneBackgroundColor = Brushes.Green;
+                AnswerOptionOneBackgroundColor = Brushes.SpringGreen;
 
             if (answer.AnswerOrderId == 2)
-                AnswerOptionTwoBackgroundColor = Brushes.Green;
+                AnswerOptionTwoBackgroundColor = Brushes.SpringGreen;
 
             if (answer.AnswerOrderId == 3)
-                AnswerOptionThreeBackgroundColor = Brushes.Green;
+                AnswerOptionThreeBackgroundColor = Brushes.SpringGreen;
 
             if (answer.AnswerOrderId == 4)
-                AnswerOptionFourBackgroundColor = Brushes.Green;
+                AnswerOptionFourBackgroundColor = Brushes.SpringGreen;
         }
 
         public void StartQuiz(QuestionPackViewModel ActivePack)
         {
-            // kalla på enskilda metoder(eller ICommands?) för fråga, nummer fråga och svarsalternativ?
-            // Shuffle pack för ordning?
 
             _playingPack = ActivePack;
             _playingPack.Questions.Shuffle();
@@ -281,7 +272,7 @@ namespace Net24_Labb3.ViewModel
             }
             else
             {
-                MessageBox.Show("Det finns inga frågor i det valda frågepaketet.", "Ingen fråga tillgänglig", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("There are no questions in the selected question pack.", "No question available", MessageBoxButton.OK, MessageBoxImage.Information);
                 
                 mainWindowViewModel.IsPlayMode = false;
                 mainWindowViewModel.ShowPackQuestions = true;
@@ -303,6 +294,10 @@ namespace Net24_Labb3.ViewModel
             {
                 HandleTimeHasRunOut();
             }
+            else if (mainWindowViewModel?.IsPlayMode == false)
+            {
+                dispatcherTimer.Stop();
+            }
             else
             {
                 time = time.Add(TimeSpan.FromSeconds(-1));
@@ -313,7 +308,7 @@ namespace Net24_Labb3.ViewModel
         private void HandleTimeHasRunOut()
         {
             dispatcherTimer.Stop();
-            ShowOutOfTimeText = true;
+            MessageBox.Show("Your time is up! Go to Next Question", "Time's Up!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             NextQuestionAvailable = true;
 
         }

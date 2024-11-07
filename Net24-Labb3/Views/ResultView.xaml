@@ -16,17 +16,19 @@
             FontFamily="Bell MT"/>
 
         <TextBlock 
-            Text="You're good! Click the button below to en PlayMode"
+            Text="You're good! Click the button below to end PlayMode"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
-             FontSize="20"
-            FontFamily="Bell MT" Margin="0,285,0,0"/>
+            FontSize="18"
+            FontFamily="Bell MT" 
+            Margin="0,285,0,0" Foreground="#FF0E7F0B"/>
 
         <Button Content="End PlayMode" 
                 Width="100"
                 Height="50" Margin="350,326,350,74"
                 FontFamily="Bell MT"
-                Command="{Binding EndPlayViewCommand}"/>
+                FontWeight="Bold"
+                Command="{Binding EndPlayViewCommand}" Background="MistyRose"/>
 
         <fa:IconImage Icon="Medal"
                       Height="100"

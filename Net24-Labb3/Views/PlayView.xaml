@@ -42,14 +42,6 @@
         </Grid>
 
         <Grid>
-            <TextBlock Text="Time has run out, move to next question!"
-                   Width="500"
-                   FontWeight="Bold"
-                   FontFamily="Bell MT"
-                   Visibility="{Binding PlayViewModel.ShowOutOfTimeText, Converter={StaticResource boolToVisibilityConverter}}" 
-                   Foreground="#FF0F1DF7" 
-                   FontSize="22" 
-                   Margin="181,292,119,130"/>
 
             <Button x:Name="AnswerOptionButton1"
                 Content="{Binding PlayViewModel.Answers[0].AnswerOption}"
@@ -59,6 +51,7 @@
                 FontFamily="Bell MT"
                 Margin="130,165,370,100"
                 Width="150" Height="70"
+                FontWeight="Bold"
                 TabIndex="1"/>
 
         <Button x:Name="AnswerOptionButton2"
@@ -69,6 +62,7 @@
                 FontFamily="Bell MT"
                 Margin="370,165,130,100"
                 Width="150" Height="70"
+                FontWeight="Bold"
                 TabIndex="2"/>
 
         <Button x:Name="AnswerOptionButton3"
@@ -79,6 +73,7 @@
                 FontFamily="Bell MT"
                 Margin="130,300,370,20"
                 Width="150" Height="70"
+                FontWeight="Bold"
                 TabIndex="3"/>
 
         <Button x:Name="AnswerOptionButton4"
@@ -89,15 +84,18 @@
                 FontFamily="Bell MT"
                 Margin="370,300,130,20"
                 Width="150" Height="70"
+                FontWeight="Bold"
                 TabIndex="4"/>
 
         </Grid>
 
 
         <Button Content="Next Question"
-        Visibility="{Binding PlayViewModel.NextQuestionAvailable, Converter={StaticResource boolToVisibilityConverter}}"
-        Command="{Binding PlayViewModel.MoveToNextQuestionCommand}"
+                Visibility="{Binding PlayViewModel.NextQuestionAvailable, Converter={StaticResource boolToVisibilityConverter}}"
+                Command="{Binding PlayViewModel.MoveToNextQuestionCommand}"
                 Width="100"
-        Height="30" Margin="670,278,30,142"/>
+                Height="30" 
+                Margin="670,278,30,142"
+                FontWeight="Bold"/>
     </Grid>
 </UserControl>

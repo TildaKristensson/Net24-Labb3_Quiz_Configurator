@@ -9,6 +9,7 @@ using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace Net24_Labb3.ViewModel
 {
@@ -22,14 +23,12 @@ namespace Net24_Labb3.ViewModel
 
         public ConfigurationViewModel ConfigurationViewModel { get; }
 
-        //public bool VisibleWindow { get; set; }
+        public DelegateCommand ChooseQuestionCommand { get; }
 
         private bool _showPackQuestions;
         private bool _isPlayMode;
         private bool _isConfigurationMode;
         private bool _isResultMode;
-
-        //public DelegateCommand ShowConfigurationViewCommand;
 
        public DelegateCommand UpdatePackCommand { get; }
         public DelegateCommand CreatePackCommand { get; }
@@ -116,13 +115,10 @@ namespace Net24_Labb3.ViewModel
 
             PlayViewModel = new PlayViewModel(this);
 
-            //ShowConfigurationViewCommand = new DelegateCommand(ShowConfigurationView);
-            //ShowPlayViewCommand = new DelegateCommand(ShowPlayMode);
             _jsonFileHandler = new JsonFileHandler();
-            //_jsonFileHandler.AddOrUpdateQuestionPack(new QuestionPack("hej", Difficulty.Medium, 30)
-            //{
+     
+            ChooseQuestionCommand = new DelegateCommand(ChooseQuestion);
 
-            //}).GetAwaiter().GetResult();
             ShowPlayViewCommand = new DelegateCommand(_ => StartPlay());
             EndPlayViewCommand = new DelegateCommand(_ => EndPlay());
 
@@ -132,6 +128,7 @@ namespace Net24_Labb3.ViewModel
             IsResultMode = false;
 
             Packs = new ObservableCollection<QuestionPackViewModel>();
+
             var packsInFile = Task.Run(() => _jsonFileHandler.GetQuestionPacksFromFile()).Result;
             if ( packsInFile != null)
             {
@@ -147,16 +144,17 @@ namespace Net24_Labb3.ViewModel
 
             NewPack = new QuestionPack("NewPack");
 
-            ActivePack = new QuestionPackViewModel(new QuestionPack("ITHS Question Pack"));
-            //ActivePack.Questions.Add(new Question("Vilken färg är ITHS ankan?", "Lila", "Grön", "Blå", "Rosa"));
-            //ActivePack.Questions.Add(new Question("Vad kostar en ITHS-hoodie?", "275kr", "329kr", "249kr", "315kr"));
+            ActivePack = new QuestionPackViewModel(new QuestionPack("Choose or create a Pack!"));
 
             ConfigurationViewModel.ActiveQuestion = ActivePack.Questions.FirstOrDefault();
 
             CreatePackCommand = new DelegateCommand(CreatePack, CanCreatePack);
         }
 
-
+        private void ChooseQuestion(object obj)
+        {
+            IsConfigurationMode = true;
+        }
         private void UpdatePack(object obj)
         {
             Task.Run(() => _jsonFileHandler.AddOrUpdateQuestionPack(ActivePack));
@@ -173,29 +171,18 @@ namespace Net24_Labb3.ViewModel
         }
         private void EndPlay()
         {
+            
             IsPlayMode = false;
             IsResultMode = false;
             IsConfigurationMode = true;
             ShowPackQuestions = true;
         }
 
-        
-
-        //private void ShowPlayMode(object obj)
-        //{
-        //    IsPlayMode = true;
-        //}
-
-        //private void ShowConfigurationView(object obj)
-        //{
-        //    IsPlayMode = false;
-        //}
 
         private void SetActivePack(object obj)
         {
             ActivePack = (QuestionPackViewModel)obj;
 
-            //_jsonFileHandler.GetQuestionPacksFromFile("packName").GetAwaiter().GetResult();
 
             RaisePropertyChanged(nameof(ActivePack));
         }

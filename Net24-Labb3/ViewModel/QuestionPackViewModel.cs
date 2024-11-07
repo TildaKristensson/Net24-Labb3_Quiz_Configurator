@@ -16,7 +16,6 @@ namespace Net24_Labb3.ViewModel
     {
         private readonly Model.QuestionPack model;
 
-        //public DelegateCommand NewCommand => new DelegateCommand(execute => { }, canExecute => { return true; });
         [JsonConstructor]
         public QuestionPackViewModel(Model.QuestionPack model)
         {

@@ -56,7 +56,7 @@
             <TextBlock Width="30" Height="20"
                        HorizontalAlignment="Right"
                        Margin="0,16,65,35"
-                       Text="{Binding ElementName=PackOptionsSlider, Path=Value}" RenderTransformOrigin="0.534,0.547"/>
+                       Text="{Binding ElementName=PackOptionsSlider, Path=Value}" />
 
             <TextBlock Width="55" Height="20"
                        HorizontalAlignment="Right"

@@ -98,6 +98,11 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
+                            <StackPanel.Resources>
+                                <Style TargetType="StackPanel" >
+                                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="StackPanel_PreviewMouseLeftButtonDown" />
+                                </Style>
+                            </StackPanel.Resources>
                                         <TextBlock Text="Question:"
                                             FontWeight="Bold" />
                                         <TextBlock Text="{Binding Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -113,7 +118,7 @@
 
 
         <views:PlayView x:Name="PlayModeView" Grid.Row="1"
-                        Visibility="{Binding IsPlayMode, Converter={StaticResource boolToVisibilityConverter}}" Loaded="PlayModeView_Loaded" />
+                        Visibility="{Binding IsPlayMode, Converter={StaticResource boolToVisibilityConverter}}" />
 
         <views:ResultView Grid.Row="1"
                           Visibility="{Binding IsResultMode, Converter={StaticResource boolToVisibilityConverter}}" />

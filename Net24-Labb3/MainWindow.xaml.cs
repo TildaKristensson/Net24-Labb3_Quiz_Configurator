@@ -26,9 +26,13 @@ namespace Net24_Labb3
            
         }
 
-        private void PlayModeView_Loaded(object sender, RoutedEventArgs e)
+        private void StackPanel_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
+            var mainWindowViewModel = (MainWindowViewModel)this.DataContext;
+            if (mainWindowViewModel?.ChooseQuestionCommand?.CanExecute(null) == true)
+            {
+                mainWindowViewModel.ChooseQuestionCommand.Execute(null);
+            }
         }
     }
 }

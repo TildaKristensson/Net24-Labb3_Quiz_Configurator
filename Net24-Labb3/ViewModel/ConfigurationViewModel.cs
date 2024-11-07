@@ -26,6 +26,7 @@ namespace Net24_Labb3.ViewModel
 
         public DelegateCommand SaveQuestionCommand { get; }
 
+
         private readonly JsonFileHandler _jsonFileHandler;
 
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }

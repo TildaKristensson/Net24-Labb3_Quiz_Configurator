@@ -62,7 +62,7 @@ namespace Net24_Labb3.FileHandlers
         public async Task RemoveQuestionPackByName(string packName)
         {
             var fileContent = await File.ReadAllTextAsync(_filePath);
-            var questionPacks = JsonSerializer.Deserialize<ObservableCollection<QuestionPackViewModel>>(fileContent, _options);
+            var questionPacks = JsonSerializer.Deserialize<ObservableCollection<Model.QuestionPack>>(fileContent, _options);
 
             var packToRemove = questionPacks.FirstOrDefault(p => p.Name.Equals(packName, StringComparison.CurrentCultureIgnoreCase));
 

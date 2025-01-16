@@ -9,11 +9,11 @@ namespace Net24_Labb3.Model
     class Category
     {
         
-        public Category(string categories)
+        public Category(string name)
         {
-            Categories = categories;
+            Name = name;
         }
 
-        public string Categories { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Net24_Labb3.FileHandlers;
 using Net24_Labb3.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration.Internal;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,8 @@ namespace Net24_Labb3.ViewModel
     {
         private readonly MainWindowViewModel? mainWindowViewModel;
 
+        private readonly QuestionPackViewModel? questionPackViewModel;
+
         public DelegateCommand OpenCreatePackDialogCommand { get; }
         public DelegateCommand OpenPackOptionsCommand { get; }
 
@@ -28,16 +31,19 @@ namespace Net24_Labb3.ViewModel
 
         public DelegateCommand RemovePackCommand { get; }
 
+        
+
         public DelegateCommand SaveQuestionCommand { get; }
 
         public DelegateCommand AddNewCategoryCommand { get; }
+        public DelegateCommand RemoveCategoryCommand { get; }
 
 
         private readonly JsonFileHandler _jsonFileHandler;
 
-        private QuestionPackViewModel _newCategory;
+        private Category _newCategory;
 
-        public QuestionPackViewModel NewCategory
+        public Category NewCategory
         {
             get => _newCategory;
             set
@@ -48,6 +54,7 @@ namespace Net24_Labb3.ViewModel
         }
 
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }
+
 
         private Question _activeQuestion;
 
@@ -61,16 +68,29 @@ namespace Net24_Labb3.ViewModel
             }
         }
 
-      private Category _activeCategory;
+        private Category _activeCategory;
         public Category ActiveCategory
         {
             get => _activeCategory;
             set
             {
                 _activeCategory = value;
-                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(ActiveCategory));
             }
         }
+
+        private ObservableCollection<Category> _categories;
+
+        public ObservableCollection<Category> Categories
+        {
+            get => _categories;
+            set
+            {
+                _categories = value;
+                RaisePropertyChanged(nameof(Categories));
+            }
+        }
+
 
         public ConfigurationViewModel(MainWindowViewModel? mainWindowViewModel)
         {
@@ -87,20 +107,40 @@ namespace Net24_Labb3.ViewModel
             RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
 
             AddNewCategoryCommand = new DelegateCommand(AddNewCategory);
+            RemoveCategoryCommand = new DelegateCommand(RemoveCategory);
 
             SaveQuestionCommand = new DelegateCommand(SaveQuestion);
 
             RemovePackCommand = new DelegateCommand(RemovePack);
 
+            Categories = new ObservableCollection<Category>();
+
             _jsonFileHandler = new JsonFileHandler();
+
+            
+        }
+
+        private void RemoveCategory(object obj)
+        {
+            Categories.Remove(ActiveCategory);
+
+            RemoveCategoryCommand.RaiseCanExecuteChanged();
         }
 
         private void AddNewCategory(object obj)
         {
-            // 
-            NewCategory?.Categories.Add(new Category("nameOfCategory"));
+            //Categories.Add(NewCategory);
+
+            AddingCategory("New Category");
+
+            AddNewCategoryCommand.RaiseCanExecuteChanged();
         }
 
+        public void AddingCategory(string name)
+        {
+            var newCategory = new Category(name);
+            Categories.Add(newCategory);
+        }
         private void RemovePack(object obj)
         {
             mainWindowViewModel?.Packs.Remove(ActivePack);

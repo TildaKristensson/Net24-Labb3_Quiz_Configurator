@@ -20,8 +20,9 @@ namespace Net24_Labb3.ViewModel
         public QuestionPackViewModel(Model.QuestionPack model)
         {
             this.model = model;
+            Category = model.Category;
             this.Questions = new ObservableCollection<Question>(model.Questions);
-            this.Categories = new ObservableCollection<Category>(model.Categories);
+            
         }
 
         public string Name 
@@ -33,15 +34,7 @@ namespace Net24_Labb3.ViewModel
             }
         }
 
-        //public string Category
-        //{
-        //    get => model.Category;
-        //    set
-        //    {
-        //        model.Category = value;
-        //        RaisePropertyChanged();
-        //    }
-        //}
+        public Category Category { get; set; }
 
 
        
@@ -67,7 +60,7 @@ namespace Net24_Labb3.ViewModel
 
 
         public ObservableCollection<Question> Questions { get; }
-        public ObservableCollection<Category> Categories { get; }
+        
        
     }
 }

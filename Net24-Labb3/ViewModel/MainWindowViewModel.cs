@@ -17,11 +17,14 @@ namespace Net24_Labb3.ViewModel
     {
         public ObservableCollection<QuestionPackViewModel> Packs { get; set; }
 
+        public ObservableCollection<Category> Cats { get; set; }
+
         public PlayViewModel PlayViewModel { get; }
 
         private JsonFileHandler _jsonFileHandler;
 
         public ConfigurationViewModel ConfigurationViewModel { get; }
+
 
         public DelegateCommand ChooseQuestionCommand { get; }
 
@@ -33,6 +36,7 @@ namespace Net24_Labb3.ViewModel
        public DelegateCommand UpdatePackCommand { get; }
         public DelegateCommand CreatePackCommand { get; }
         public DelegateCommand SetActivePackCommand { get; }
+
 
         private QuestionPackViewModel _activePack;
 
@@ -50,6 +54,7 @@ namespace Net24_Labb3.ViewModel
                 ConfigurationViewModel?.RaisePropertyChanged();
 			}
 		}
+
 
         public QuestionPack NewPack 
         { 
@@ -139,6 +144,8 @@ namespace Net24_Labb3.ViewModel
                 }
             }
 
+            Cats = new ObservableCollection<Category>();
+
             SetActivePackCommand = new DelegateCommand(SetActivePack, CanSetActivePack);
 
             UpdatePackCommand = new DelegateCommand(UpdatePack);
@@ -149,12 +156,11 @@ namespace Net24_Labb3.ViewModel
 
             ConfigurationViewModel.ActiveQuestion = ActivePack.Questions.FirstOrDefault();
 
-            ConfigurationViewModel.ActiveCategory = ActivePack.Categories.FirstOrDefault();
+            //ConfigurationViewModel.ActiveCategory = ActivePack.Categories.FirstOrDefault();
 
             CreatePackCommand = new DelegateCommand(CreatePack, CanCreatePack);
         }
 
-    
 
         private void ChooseQuestion(object obj)
         {
@@ -195,7 +201,7 @@ namespace Net24_Labb3.ViewModel
 
         private void CreatePack(object obj)
         {
-            var questionPack = new QuestionPackViewModel(new QuestionPack(NewPack.Name, NewPack.Difficulty, NewPack.TimeLimitInSeconds));
+            var questionPack = new QuestionPackViewModel(new QuestionPack(NewPack.Name, NewPack.Category, NewPack.Difficulty, NewPack.TimeLimitInSeconds));
             Packs.Add(questionPack);
 
             Task.Run(() => _jsonFileHandler.AddOrUpdateQuestionPack(questionPack));

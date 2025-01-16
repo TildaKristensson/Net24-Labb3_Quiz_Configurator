@@ -13,12 +13,12 @@ namespace Net24_Labb3.Model
     {
         [JsonConstructor]
 
-        public QuestionPack(string name,Difficulty difficulty = Difficulty.Medium, int timeLimitInSeconds = 30)
+        public QuestionPack(string name, Category category = null, Difficulty difficulty = Difficulty.Medium, int timeLimitInSeconds = 30)
         {
             Name = name;
+            Category = category;
             Difficulty = difficulty;
             TimeLimitInSeconds = timeLimitInSeconds;
-            Categories = new List<Category>();
             Questions = new List<Question>();
         }
 
@@ -30,6 +30,6 @@ namespace Net24_Labb3.Model
 
         public List<Question> Questions { get; set; }
 
-        public List<Category> Categories { get; set; }
+        public Category Category { get; set; }
     }
 }

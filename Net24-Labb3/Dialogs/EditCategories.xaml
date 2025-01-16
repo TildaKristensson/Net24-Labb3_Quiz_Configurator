@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Net24_Labb3.Dialogs" 
-        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-        mc:Ignorable="d"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" xmlns:viewmodel="clr-namespace:Net24_Labb3.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
+        mc:Ignorable="d" 
         Title="Edit Categories" Height="320" Width="450">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -15,24 +15,26 @@
 
         <Button x:Name="CategoryAddButton"
                 Grid.Column="0"
+                Panel.ZIndex="1"
                 Width="20"
                 Height="20"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Margin="0, 12, 50, 5" 
-                Command="{Binding}">
+                Command="{Binding ConfigurationViewModel.AddNewCategoryCommand}">
                     <Button.Content>
                         <fa:IconBlock Icon="Plus" />
                     </Button.Content>
         </Button>
 
         <Button x:Name="CategoryRemoveButton"
+                Panel.ZIndex="1"
                 Width="20"
                 Height="20" 
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Top"
                 Margin="20, 12, 20, 5"
-                Command="{Binding }">
+                Command="{Binding ConfigurationViewModel.RemoveCategoryCommand}">
                     <Button.Content>
                         <fa:IconBlock Icon="Minus" />
                     </Button.Content>
@@ -50,11 +52,11 @@
                      SelectionMode="Single"
                      TabIndex="1"
                      SelectedItem="{Binding ActiveCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     ItemsSource="{Binding ActiveCategory.Categories}">
+                     ItemsSource="{Binding Categories}" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
-                            <TextBlock Text="{Binding Categories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -70,12 +72,13 @@
                    FontWeight="Medium"
                    Margin="10"/>
             <TextBox Margin="10" 
-                     Height="30"/>
+                     Height="30"
+                     Text="{Binding ConfigurationViewModel.ActiveCategory.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
 
         <Button x:Name="CreateNewCategoryButton"
                 Grid.Column="1"
-                Content="Create" 
+                Content="Save" 
                 Width="70"
                 Height="30"
                 HorizontalAlignment="Left"
@@ -91,8 +94,6 @@
                 VerticalAlignment="Bottom"
                 Margin="0, 10, 20, 60" 
                 Click="CancelNewCategoryButton_Click"/>
-
-
 
     </Grid>
 </Window>

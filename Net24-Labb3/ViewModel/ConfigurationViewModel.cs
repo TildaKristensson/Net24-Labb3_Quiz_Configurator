@@ -4,9 +4,11 @@ using Net24_Labb3.FileHandlers;
 using Net24_Labb3.Model;
 using System;
 using System.Collections.Generic;
+using System.Configuration.Internal;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace Net24_Labb3.ViewModel
@@ -18,6 +20,8 @@ namespace Net24_Labb3.ViewModel
         public DelegateCommand OpenCreatePackDialogCommand { get; }
         public DelegateCommand OpenPackOptionsCommand { get; }
 
+        public DelegateCommand OpenEditCategoriesCommand { get; }
+
         public DelegateCommand AddNewQuestionCommand { get; }
 
         public DelegateCommand RemoveQuestionCommand { get; }
@@ -26,8 +30,22 @@ namespace Net24_Labb3.ViewModel
 
         public DelegateCommand SaveQuestionCommand { get; }
 
+        public DelegateCommand AddNewCategoryCommand { get; }
+
 
         private readonly JsonFileHandler _jsonFileHandler;
+
+        private QuestionPackViewModel _newCategory;
+
+        public QuestionPackViewModel NewCategory
+        {
+            get => _newCategory;
+            set
+            {
+                _newCategory = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }
 
@@ -43,59 +61,17 @@ namespace Net24_Labb3.ViewModel
             }
         }
 
-        private string _query;
-        public string Query { 
-            get => ActiveQuestion.Query;
-            set {
-                ActiveQuestion.Query = value;
-                RaisePropertyChanged("ActiveQuestion");
-            }
-        }
-
-        private string _correctAnswer;
-
-        public string CorrectAnswer {
-            get => ActiveQuestion.CorrectAnswer; 
-            set
-            {
-                ActiveQuestion.CorrectAnswer = value;
-                RaisePropertyChanged("ActiveQuestion");
-            }
-        }
-
-        private string _incorrectAnswer1;
-
-        public string IncorrectAnswer1 
+      private Category _activeCategory;
+        public Category ActiveCategory
         {
-            get => ActiveQuestion.IncorrectAnswers[0]; 
+            get => _activeCategory;
             set
             {
-                ActiveQuestion.IncorrectAnswers[0] = value;
-                RaisePropertyChanged("ActiveQuestion");
+                _activeCategory = value;
+                RaisePropertyChanged();
             }
         }
 
-        private string _incorrectAnswer2;
-        public string IncorrectAnswer2
-        {
-            get => ActiveQuestion.IncorrectAnswers[1];
-            set
-            {
-                ActiveQuestion.IncorrectAnswers[1] = value;
-                RaisePropertyChanged("ActiveQuestion");
-            }
-        }
-
-        private string _incorrectAnswer3;
-        public string IncorrectAnswer3
-        {
-            get => ActiveQuestion.IncorrectAnswers[2];
-            set
-            {
-                ActiveQuestion.IncorrectAnswers[2] = value;
-                RaisePropertyChanged("ActiveQuestion");
-            }
-        }
         public ConfigurationViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
@@ -104,9 +80,13 @@ namespace Net24_Labb3.ViewModel
 
             OpenPackOptionsCommand = new DelegateCommand(OpenPackOptions, CanOpenPackOptions);
 
+            OpenEditCategoriesCommand = new DelegateCommand(OpenEditCategories);
+
             AddNewQuestionCommand = new DelegateCommand(AddNewQuestion, CanAddNewQuestion);
 
             RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, CanRemoveQuestion);
+
+            AddNewCategoryCommand = new DelegateCommand(AddNewCategory);
 
             SaveQuestionCommand = new DelegateCommand(SaveQuestion);
 
@@ -115,7 +95,11 @@ namespace Net24_Labb3.ViewModel
             _jsonFileHandler = new JsonFileHandler();
         }
 
-      
+        private void AddNewCategory(object obj)
+        {
+            // 
+            NewCategory?.Categories.Add(new Category("nameOfCategory"));
+        }
 
         private void RemovePack(object obj)
         {
@@ -169,6 +153,14 @@ namespace Net24_Labb3.ViewModel
             createNewPackDialog.ShowDialog();
 
             OpenCreatePackDialogCommand.RaiseCanExecuteChanged();
+        }
+
+        private void OpenEditCategories(object obj)
+        {
+            EditCategories editCategories = new();
+            editCategories.ShowDialog();
+
+            OpenEditCategoriesCommand.RaiseCanExecuteChanged();
         }
     }
 }

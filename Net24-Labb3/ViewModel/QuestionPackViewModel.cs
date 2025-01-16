@@ -21,6 +21,7 @@ namespace Net24_Labb3.ViewModel
         {
             this.model = model;
             this.Questions = new ObservableCollection<Question>(model.Questions);
+            this.Categories = new ObservableCollection<Category>(model.Categories);
         }
 
         public string Name 
@@ -32,6 +33,18 @@ namespace Net24_Labb3.ViewModel
             }
         }
 
+        //public string Category
+        //{
+        //    get => model.Category;
+        //    set
+        //    {
+        //        model.Category = value;
+        //        RaisePropertyChanged();
+        //    }
+        //}
+
+
+       
         public Difficulty Difficulty
         {
             get => model.Difficulty;
@@ -51,7 +64,10 @@ namespace Net24_Labb3.ViewModel
                 RaisePropertyChanged();
             }
         }
+
+
         public ObservableCollection<Question> Questions { get; }
+        public ObservableCollection<Category> Categories { get; }
        
     }
 }

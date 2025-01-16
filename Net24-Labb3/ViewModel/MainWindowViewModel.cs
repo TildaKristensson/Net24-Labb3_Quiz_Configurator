@@ -32,12 +32,13 @@ namespace Net24_Labb3.ViewModel
 
        public DelegateCommand UpdatePackCommand { get; }
         public DelegateCommand CreatePackCommand { get; }
-
         public DelegateCommand SetActivePackCommand { get; }
 
         private QuestionPackViewModel _activePack;
 
         private QuestionPack _newPack;
+
+ 
 
 		public QuestionPackViewModel ActivePack
 		{
@@ -148,8 +149,12 @@ namespace Net24_Labb3.ViewModel
 
             ConfigurationViewModel.ActiveQuestion = ActivePack.Questions.FirstOrDefault();
 
+            ConfigurationViewModel.ActiveCategory = ActivePack.Categories.FirstOrDefault();
+
             CreatePackCommand = new DelegateCommand(CreatePack, CanCreatePack);
         }
+
+    
 
         private void ChooseQuestion(object obj)
         {
@@ -182,7 +187,6 @@ namespace Net24_Labb3.ViewModel
         private void SetActivePack(object obj)
         {
             ActivePack = (QuestionPackViewModel)obj;
-
 
             RaisePropertyChanged(nameof(ActivePack));
         }

@@ -35,10 +35,15 @@
                           InputGestureText="Ctrl+N"
                           Command="{Binding ConfigurationViewModel.OpenCreatePackDialogCommand}"
                           TabIndex="1"/>
+                <MenuItem Header="_Edit Categories"
+                          Icon="{fa:Icon Icons}"
+                          InputGestureText="Ctrl+C"
+                          TabIndex="2"
+                          Command="{Binding ConfigurationViewModel.OpenEditCategoriesCommand}"/>
                 <MenuItem Header="_Select Question Pack"
                           Icon="{fa:Icon HandPointer}" 
                           InputGestureText="Ctrl+S"
-                          TabIndex="2">
+                          TabIndex="3">
                     <MenuItem.ItemsSource>
                         <Binding Path="Packs" />
                     </MenuItem.ItemsSource>
@@ -54,17 +59,17 @@
                           Icon="{fa:Icon Trash}"
                           InputGestureText="Ctrl+D"
                           Command="{Binding ConfigurationViewModel.RemovePackCommand}"
-                          TabIndex="3"/>
+                          TabIndex="4"/>
                 <Separator/>
                 <MenuItem Header="_Import Questions" 
                           Icon="{fa:Icon CloudArrowDown}"
                           InputGestureText="Ctrl+I"
-                          TabIndex="4"/>
+                          TabIndex="5"/>
                 <Separator/>
                 <MenuItem Header="E_xit"
                           Icon="{fa:Icon PersonThroughWindow}"
                           InputGestureText="Ctrl+X"
-                          TabIndex="5"/>
+                          TabIndex="6"/>
             </MenuItem>
 
             <MenuItem Header="_Edit" TabIndex="2">

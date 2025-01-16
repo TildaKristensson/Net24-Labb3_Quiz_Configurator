@@ -8,14 +8,17 @@ using System.Threading.Tasks;
 namespace Net24_Labb3.Model
 {
     enum Difficulty { Easy, Medium, Hard }
+   
     internal class QuestionPack
     {
         [JsonConstructor]
-        public QuestionPack(string name, Difficulty difficulty = Difficulty.Medium, int timeLimitInSeconds = 30)
+
+        public QuestionPack(string name,Difficulty difficulty = Difficulty.Medium, int timeLimitInSeconds = 30)
         {
             Name = name;
             Difficulty = difficulty;
             TimeLimitInSeconds = timeLimitInSeconds;
+            Categories = new List<Category>();
             Questions = new List<Question>();
         }
 
@@ -27,5 +30,6 @@ namespace Net24_Labb3.Model
 
         public List<Question> Questions { get; set; }
 
+        public List<Category> Categories { get; set; }
     }
 }

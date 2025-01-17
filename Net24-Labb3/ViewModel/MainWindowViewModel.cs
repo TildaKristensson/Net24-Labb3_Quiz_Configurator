@@ -17,8 +17,6 @@ namespace Net24_Labb3.ViewModel
     {
         public ObservableCollection<QuestionPackViewModel> Packs { get; set; }
 
-        public ObservableCollection<Category> Cats { get; set; }
-
         public PlayViewModel PlayViewModel { get; }
 
         private JsonFileHandler _jsonFileHandler;
@@ -144,7 +142,7 @@ namespace Net24_Labb3.ViewModel
                 }
             }
 
-            Cats = new ObservableCollection<Category>();
+           
 
             SetActivePackCommand = new DelegateCommand(SetActivePack, CanSetActivePack);
 

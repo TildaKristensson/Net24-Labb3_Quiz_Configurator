@@ -40,8 +40,9 @@
 
             <ComboBox x:Name="CategoryNew" 
                         Margin="10 0 10 0" 
-                        ItemsSource="{Binding Path=., Converter={StaticResource DifficultyConverter}}"
-                        SelectedItem="{Binding NewPack.Difficulty}">
+                        ItemsSource="{Binding ConfigurationViewModel.Categories}"
+                        DisplayMemberPath="Name"
+                        SelectedItem="{Binding ConfigurationViewModel.ActiveCategory.Name}">
             </ComboBox>
 
             <Grid>

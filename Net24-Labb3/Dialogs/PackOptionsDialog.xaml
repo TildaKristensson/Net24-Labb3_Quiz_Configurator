@@ -80,8 +80,9 @@
            FontWeight="Bold" />
             <ComboBox x:Name="Categoey"
               Margin="10, 0,10, 10"
-              ItemsSource="{Binding Path=., Converter={StaticResource DifficultyConverter}}"
-              SelectedItem="{Binding ActivePack.Difficulty}"/>
+              ItemsSource="{Binding ConfigurationViewModel.Categories}"
+             DisplayMemberPath="Name"
+              SelectedItem="{Binding ConfigurationViewModel.ActiveCategory.Name}"/>
 
         </StackPanel>
 

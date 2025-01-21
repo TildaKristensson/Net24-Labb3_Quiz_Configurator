@@ -42,7 +42,7 @@
                         Margin="10 0 10 0" 
                         ItemsSource="{Binding ConfigurationViewModel.Categories}"
                         DisplayMemberPath="Name"
-                        SelectedItem="{Binding ConfigurationViewModel.ActiveCategory.Name}">
+                        SelectedItem="{Binding ConfigurationViewModel.ActiveCategory}">
             </ComboBox>
 
             <Grid>

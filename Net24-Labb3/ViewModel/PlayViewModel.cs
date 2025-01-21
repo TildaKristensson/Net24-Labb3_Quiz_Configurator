@@ -24,7 +24,7 @@ namespace Net24_Labb3.ViewModel
 
         private DispatcherTimer dispatcherTimer;
         private TimeSpan time;
-        private QuestionPackViewModel _playingPack;
+        private QuestionPack _playingPack;
 
         private Question _playingQuestion;
 
@@ -256,7 +256,7 @@ namespace Net24_Labb3.ViewModel
                 AnswerOptionFourBackgroundColor = Brushes.SpringGreen;
         }
 
-        public void StartQuiz(QuestionPackViewModel ActivePack)
+        public void StartQuiz(QuestionPack ActivePack)
         {
 
             _playingPack = ActivePack;

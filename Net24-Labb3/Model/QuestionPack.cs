@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Net24_Labb3.Model
 {
-    enum Difficulty { Easy, Medium, Hard }
+    public enum Difficulty { Easy, Medium, Hard }
    
-    internal class QuestionPack
+    public class QuestionPack
     {
         [JsonConstructor]
 
@@ -22,8 +24,11 @@ namespace Net24_Labb3.Model
             Questions = new List<Question>();
         }
 
+        [BsonId]
+        public ObjectId Id { get; set; }
         public string Name { get; set; }
 
+        [BsonRepresentation(BsonType.String)]
         public Difficulty Difficulty { get; set; }
 
         public int TimeLimitInSeconds { get; set; }

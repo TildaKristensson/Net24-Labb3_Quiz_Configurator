@@ -1,6 +1,7 @@
-﻿using Net24_Labb3.Command;
+﻿using MongoDB.Driver;
+using Net24_Labb3.Command;
+using Net24_Labb3.Data;
 using Net24_Labb3.Dialogs;
-using Net24_Labb3.FileHandlers;
 using Net24_Labb3.Model;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,12 @@ namespace Net24_Labb3.ViewModel
 {
     class MainWindowViewModel : ViewModelBase
     {
-        public ObservableCollection<QuestionPackViewModel> Packs { get; set; }
+        public ObservableCollection<QuestionPack> Packs { get; set; }
 
         public PlayViewModel PlayViewModel { get; }
 
-        private JsonFileHandler _jsonFileHandler;
+
+        private QuizDbs _quizDbs;
 
         public ConfigurationViewModel ConfigurationViewModel { get; }
 
@@ -36,13 +38,13 @@ namespace Net24_Labb3.ViewModel
         public DelegateCommand SetActivePackCommand { get; }
 
 
-        private QuestionPackViewModel _activePack;
+        private QuestionPack _activePack;
 
         private QuestionPack _newPack;
 
  
 
-		public QuestionPackViewModel ActivePack
+		public QuestionPack ActivePack
 		{
 			get => _activePack;
 			set 
@@ -112,6 +114,7 @@ namespace Net24_Labb3.ViewModel
 
         public DelegateCommand ShowPlayViewCommand { get; }
         public DelegateCommand EndPlayViewCommand { get; }
+        
 
         public MainWindowViewModel()
         {
@@ -119,7 +122,7 @@ namespace Net24_Labb3.ViewModel
 
             PlayViewModel = new PlayViewModel(this);
 
-            _jsonFileHandler = new JsonFileHandler();
+            _quizDbs = new QuizDbs();
      
             ChooseQuestionCommand = new DelegateCommand(ChooseQuestion);
 
@@ -131,18 +134,9 @@ namespace Net24_Labb3.ViewModel
             IsConfigurationMode = false;
             IsResultMode = false;
 
-            Packs = new ObservableCollection<QuestionPackViewModel>();
+            Packs = new ObservableCollection<QuestionPack>();
 
-            var packsInFile = Task.Run(() => _jsonFileHandler.GetQuestionPacksFromFile()).Result;
-            if ( packsInFile != null)
-            {
-                foreach (var pack in packsInFile)
-                {
-                    Packs.Add(pack);
-                }
-            }
-
-           
+            LoadPacksLoadPacksAndCategories();
 
             SetActivePackCommand = new DelegateCommand(SetActivePack, CanSetActivePack);
 
@@ -150,7 +144,9 @@ namespace Net24_Labb3.ViewModel
 
             NewPack = new QuestionPack("NewPack");
 
-            ActivePack = new QuestionPackViewModel(new QuestionPack("Choose or create a Pack!"));
+            ActivePack = new QuestionPack("Choose or create a Pack!");
+
+           
 
             ConfigurationViewModel.ActiveQuestion = ActivePack.Questions.FirstOrDefault();
 
@@ -159,14 +155,32 @@ namespace Net24_Labb3.ViewModel
             CreatePackCommand = new DelegateCommand(CreatePack, CanCreatePack);
         }
 
+        public void LoadPacksLoadPacksAndCategories()
+        {
+            var packsInDb = _quizDbs.QuestionPacks.Find(_ => true).ToList();
 
+            var categoriesInDb = _quizDbs.Categories.Find(_ => true).ToList();
+
+            foreach (var pack in packsInDb)
+            {
+                Packs.Add(pack);
+            }
+
+            foreach (var cat in categoriesInDb)
+            {
+                ConfigurationViewModel.Categories.Add(cat);
+            }
+
+            RaisePropertyChanged(nameof(Packs));
+            RaisePropertyChanged(nameof(ConfigurationViewModel.Categories));
+        }
         private void ChooseQuestion(object obj)
         {
             IsConfigurationMode = true;
         }
         private void UpdatePack(object obj)
         {
-            Task.Run(() => _jsonFileHandler.AddOrUpdateQuestionPack(ActivePack));
+            // Implementera denna! 
 
             UpdatePackCommand.RaiseCanExecuteChanged();
         }
@@ -190,7 +204,7 @@ namespace Net24_Labb3.ViewModel
 
         private void SetActivePack(object obj)
         {
-            ActivePack = (QuestionPackViewModel)obj;
+            ActivePack = (QuestionPack)obj;
 
             RaisePropertyChanged(nameof(ActivePack));
         }
@@ -199,10 +213,10 @@ namespace Net24_Labb3.ViewModel
 
         private void CreatePack(object obj)
         {
-            var questionPack = new QuestionPackViewModel(new QuestionPack(NewPack.Name, NewPack.Category, NewPack.Difficulty, NewPack.TimeLimitInSeconds));
+            var questionPack = new QuestionPack(NewPack.Name, NewPack.Category, NewPack.Difficulty, NewPack.TimeLimitInSeconds);
             Packs.Add(questionPack);
 
-            Task.Run(() => _jsonFileHandler.AddOrUpdateQuestionPack(questionPack));
+            _quizDbs.QuestionPacks.InsertOne(questionPack);
 
             CreatePackCommand.RaiseCanExecuteChanged();
         }

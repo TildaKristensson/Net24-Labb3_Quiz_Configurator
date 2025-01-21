@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Net24_Labb3.ViewModel
 {
-    class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 

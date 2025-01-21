@@ -1,11 +1,13 @@
-﻿using Net24_Labb3.Command;
+﻿using MongoDB.Driver;
+using Net24_Labb3.Command;
+using Net24_Labb3.Data;
 using Net24_Labb3.Dialogs;
-using Net24_Labb3.FileHandlers;
 using Net24_Labb3.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration.Internal;
+using System.Drawing.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,15 +33,16 @@ namespace Net24_Labb3.ViewModel
 
         public DelegateCommand RemovePackCommand { get; }
 
-        
+        public DelegateCommand SaveCategoryCommand { get; }
+
+        public DelegateCommand UpdateCategoryCommand { get; }
 
         public DelegateCommand SaveQuestionCommand { get; }
 
         public DelegateCommand AddNewCategoryCommand { get; }
         public DelegateCommand RemoveCategoryCommand { get; }
 
-
-        private readonly JsonFileHandler _jsonFileHandler;
+        private readonly QuizDbs _quizDbs;
 
         private Category _newCategory;
 
@@ -53,7 +56,7 @@ namespace Net24_Labb3.ViewModel
             }
         }
 
-        public QuestionPackViewModel? ActivePack { get => mainWindowViewModel.ActivePack; }
+        public QuestionPack? ActivePack { get => mainWindowViewModel.ActivePack; }
 
 
         private Question _activeQuestion;
@@ -111,25 +114,34 @@ namespace Net24_Labb3.ViewModel
 
             SaveQuestionCommand = new DelegateCommand(SaveQuestion);
 
+            SaveCategoryCommand = new DelegateCommand(SaveCategory);
+
+            UpdateCategoryCommand = new DelegateCommand(UpdateCategory);
+
             RemovePackCommand = new DelegateCommand(RemovePack);
 
             Categories = new ObservableCollection<Category>();
 
-            _jsonFileHandler = new JsonFileHandler();
-
-            
+            _quizDbs = new QuizDbs();
         }
 
-        private void RemoveCategory(object obj)
+        private void UpdateCategory(object obj)
         {
-            Categories.Remove(ActiveCategory);
+            var filter = Builders<Category>.Filter.Eq(c => c.Id, ActiveCategory.Id);
+            var options = new ReplaceOptions { IsUpsert = false };
 
-            RemoveCategoryCommand.RaiseCanExecuteChanged();
+            _quizDbs.Categories.ReplaceOne(filter, ActiveCategory, options);
+        }
+
+        private void SaveCategory(object obj)
+        {
+            var categoryToSave = ActiveCategory;
+            _quizDbs.Categories.InsertOne(categoryToSave);
+            
         }
 
         private void AddNewCategory(object obj)
         {
-            //Categories.Add(NewCategory);
 
             AddingCategory("New Category");
 
@@ -140,11 +152,25 @@ namespace Net24_Labb3.ViewModel
         {
             var newCategory = new Category(name);
             Categories.Add(newCategory);
+
+            RaisePropertyChanged(nameof(Categories));
         }
+
+
+
+        private void RemoveCategory(object obj)
+        {
+            Categories.Remove(ActiveCategory);
+
+            _quizDbs.Categories.DeleteOne(c => c.Id == ActiveCategory.Id);
+            RemoveCategoryCommand.RaiseCanExecuteChanged();
+        }
+
         private void RemovePack(object obj)
         {
             mainWindowViewModel?.Packs.Remove(ActivePack);
-            Task.Run(() => _jsonFileHandler.RemoveQuestionPackByName(ActivePack.Name));
+
+            _quizDbs.QuestionPacks.DeleteOne(q => q.Name == ActivePack.Name);
 
             RemovePackCommand.RaiseCanExecuteChanged();
         }
@@ -153,7 +179,8 @@ namespace Net24_Labb3.ViewModel
         private void RemoveQuestion(object obj)
         {
             ActivePack?.Questions.Remove(ActiveQuestion);
-            Task.Run(() => _jsonFileHandler.AddOrUpdateQuestionPack(ActivePack));
+
+            // implementera mongodb
 
             RemoveQuestionCommand.RaiseCanExecuteChanged();
         }
@@ -170,10 +197,19 @@ namespace Net24_Labb3.ViewModel
 
         private void SaveQuestion(object obj)
         {
-            Task.Run(() => _jsonFileHandler.AddOrUpdateQuestionPack(ActivePack));
+
+            var collection = _quizDbs.QuestionPacks;
+            var filter = Builders<QuestionPack>.Filter.Eq(qp => qp.Id, ActivePack.Id);
+            var update = Builders<QuestionPack>.Update.Push(gp => gp.Questions, ActiveQuestion);
+
+            collection.UpdateOne(filter, update);
 
             SaveQuestionCommand.RaiseCanExecuteChanged();
         }
+
+
+
+
 
         private bool CanOpenPackOptions(object? arg) {return true;}
 

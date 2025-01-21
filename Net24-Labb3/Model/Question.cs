@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Net24_Labb3.Model
 {
-    class Question
+    public class Question
     {
         [JsonConstructor]
         public Question(string query, string correctAnswer, string[] incorrectAnswers)

@@ -1,4 +1,6 @@
-﻿using Net24_Labb3.Command;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using Net24_Labb3.Command;
 using Net24_Labb3.Model;
 using System;
 using System.Collections.Generic;
@@ -12,21 +14,34 @@ using System.Threading.Tasks;
 
 namespace Net24_Labb3.ViewModel
 {
-    class QuestionPackViewModel : ViewModelBase
+    public class QuestionPackViewModel : ViewModelBase
     {
         private readonly Model.QuestionPack model;
 
         [JsonConstructor]
         public QuestionPackViewModel(Model.QuestionPack model)
         {
+            
             this.model = model;
             Category = model.Category;
             this.Questions = new ObservableCollection<Question>(model.Questions);
             
         }
 
-        public string Name 
-        { get => model.Name; 
+        
+        public ObjectId Id
+        {
+            get => model.Id;
+            set
+            {
+                model.Id = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public string Name
+        {
+            get => model.Name;
             set
             {
                 model.Name = value;

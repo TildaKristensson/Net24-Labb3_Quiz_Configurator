@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Net24_Labb3.Model
 {
-    class Category
+    public class Category
     {
         
         public Category(string name)
@@ -14,6 +16,12 @@ namespace Net24_Labb3.Model
             Name = name;
         }
 
+        [BsonId]
+        public ObjectId Id { get; set; }
+
+        [BsonRepresentation(BsonType.String)]
         public string Name { get; set; }
+
+
     }
 }

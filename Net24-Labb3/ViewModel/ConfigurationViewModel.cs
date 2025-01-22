@@ -99,6 +99,8 @@ namespace Net24_Labb3.ViewModel
         {
             this.mainWindowViewModel = mainWindowViewModel;
 
+            _quizDbs = new QuizDbs();
+
             OpenCreatePackDialogCommand = new DelegateCommand(OpenCreatePackDialog, CanOpenCreatePackDialog);
 
             OpenPackOptionsCommand = new DelegateCommand(OpenPackOptions, CanOpenPackOptions);
@@ -121,8 +123,7 @@ namespace Net24_Labb3.ViewModel
             RemovePackCommand = new DelegateCommand(RemovePack);
 
             Categories = new ObservableCollection<Category>();
-
-            _quizDbs = new QuizDbs();
+            
         }
 
         private void UpdateCategory(object obj)
@@ -160,35 +161,46 @@ namespace Net24_Labb3.ViewModel
 
         private void RemoveCategory(object obj)
         {
-            Categories.Remove(ActiveCategory);
+            if (ActiveCategory != null)
+            {
+                Categories.Remove(ActiveCategory);
 
-            _quizDbs.Categories.DeleteOne(c => c.Id == ActiveCategory.Id);
-            RemoveCategoryCommand.RaiseCanExecuteChanged();
+                _quizDbs.Categories.DeleteOne(c => c.Id == ActiveCategory.Id);
+                RemoveCategoryCommand.RaiseCanExecuteChanged();
+            }
+            else { return; }
         }
 
         private void RemovePack(object obj)
         {
-            mainWindowViewModel?.Packs.Remove(ActivePack);
+            if (ActivePack != null)
+            {
+                mainWindowViewModel?.Packs.Remove(ActivePack);
 
-            _quizDbs.QuestionPacks.DeleteOne(q => q.Name == ActivePack.Name);
+                _quizDbs.QuestionPacks.DeleteOne(q => q.Name == ActivePack.Name);
 
-            RemovePackCommand.RaiseCanExecuteChanged();
+                RemovePackCommand.RaiseCanExecuteChanged();
+            }
+            else { return; }
         }
 
         private bool CanRemoveQuestion(object? arg) { return true; }
         private void RemoveQuestion(object obj)
         {
+            if (ActiveQuestion != null)
+            {
+                var collection = _quizDbs.QuestionPacks;
+                var filter = Builders<QuestionPack>.Filter.Eq(qp => qp.Id, ActivePack.Id);
+                var questionFilter = Builders<Question>.Filter.Eq(q => q.Id, ActiveQuestion.Id);
+                var update = Builders<QuestionPack>.Update.PullFilter("Questions", questionFilter);
 
-            var collection = _quizDbs.QuestionPacks;
-            var filter = Builders<QuestionPack>.Filter.Eq(qp => qp.Id, ActivePack.Id);
-            var questionFilter = Builders<Question>.Filter.Eq(q => q.Id, ActiveQuestion.Id);
-            var update = Builders<QuestionPack>.Update.PullFilter("Questions", questionFilter);
+                collection.UpdateOne(filter, update);
 
-            collection.UpdateOne(filter, update);
+                ActivePack?.Questions.Remove(ActiveQuestion);
 
-            ActivePack?.Questions.Remove(ActiveQuestion);
-
-            RemoveQuestionCommand.RaiseCanExecuteChanged();
+                RemoveQuestionCommand.RaiseCanExecuteChanged();
+            }
+            else { return; }
         }
 
         private bool CanAddNewQuestion(object? arg) { return true; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Net24_Labb3.Model;
 using Net24_Labb3.ViewModel;

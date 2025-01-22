@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace Net24_Labb3.Model
 {
@@ -13,7 +14,6 @@ namespace Net24_Labb3.Model
    
     public class QuestionPack
     {
-        [JsonConstructor]
 
         public QuestionPack(string name, Category category = null, Difficulty difficulty = Difficulty.Medium, int timeLimitInSeconds = 30)
         {
@@ -21,7 +21,7 @@ namespace Net24_Labb3.Model
             Category = category;
             Difficulty = difficulty;
             TimeLimitInSeconds = timeLimitInSeconds;
-            Questions = new List<Question>();
+            Questions = new ObservableCollection<Question>();
         }
 
         [BsonId]
@@ -33,8 +33,7 @@ namespace Net24_Labb3.Model
 
         public int TimeLimitInSeconds { get; set; }
 
-        public List<Question> Questions { get; set; }
-
-        public Category Category { get; set; }
+        public ObservableCollection<Question> Questions { get; set; }
+        public Category Category { get; set; } 
     }
 }

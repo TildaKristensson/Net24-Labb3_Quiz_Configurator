@@ -178,9 +178,15 @@ namespace Net24_Labb3.ViewModel
         private bool CanRemoveQuestion(object? arg) { return true; }
         private void RemoveQuestion(object obj)
         {
-            ActivePack?.Questions.Remove(ActiveQuestion);
 
-            // implementera mongodb
+            var collection = _quizDbs.QuestionPacks;
+            var filter = Builders<QuestionPack>.Filter.Eq(qp => qp.Id, ActivePack.Id);
+            var questionFilter = Builders<Question>.Filter.Eq(q => q.Id, ActiveQuestion.Id);
+            var update = Builders<QuestionPack>.Update.PullFilter("Questions", questionFilter);
+
+            collection.UpdateOne(filter, update);
+
+            ActivePack?.Questions.Remove(ActiveQuestion);
 
             RemoveQuestionCommand.RaiseCanExecuteChanged();
         }
@@ -206,9 +212,6 @@ namespace Net24_Labb3.ViewModel
 
             SaveQuestionCommand.RaiseCanExecuteChanged();
         }
-
-
-
 
 
         private bool CanOpenPackOptions(object? arg) {return true;}

@@ -146,11 +146,8 @@ namespace Net24_Labb3.ViewModel
 
             ActivePack = new QuestionPack("Choose or create a Pack!");
 
-           
-
+          
             ConfigurationViewModel.ActiveQuestion = ActivePack.Questions.FirstOrDefault();
-
-            //ConfigurationViewModel.ActiveCategory = ActivePack.Categories.FirstOrDefault();
 
             CreatePackCommand = new DelegateCommand(CreatePack, CanCreatePack);
         }
@@ -180,7 +177,17 @@ namespace Net24_Labb3.ViewModel
         }
         private void UpdatePack(object obj)
         {
-            // Implementera denna! 
+
+            var updatePack = new QuestionPack(ActivePack.Name, ConfigurationViewModel.ActiveCategory, ActivePack.Difficulty, ActivePack.TimeLimitInSeconds);
+
+            updatePack.Id = ActivePack.Id;
+
+            ActivePack = updatePack;
+
+            var filter = Builders<QuestionPack>.Filter.Eq(q => q.Id, ActivePack.Id);
+            var options = new ReplaceOptions { IsUpsert = false };
+
+            _quizDbs.QuestionPacks.ReplaceOne(filter, ActivePack, options);
 
             UpdatePackCommand.RaiseCanExecuteChanged();
         }
@@ -213,7 +220,7 @@ namespace Net24_Labb3.ViewModel
 
         private void CreatePack(object obj)
         {
-            var questionPack = new QuestionPack(NewPack.Name, NewPack.Category, NewPack.Difficulty, NewPack.TimeLimitInSeconds);
+            var questionPack = new QuestionPack(NewPack.Name, ConfigurationViewModel.ActiveCategory, NewPack.Difficulty, NewPack.TimeLimitInSeconds);
             Packs.Add(questionPack);
 
             _quizDbs.QuestionPacks.InsertOne(questionPack);

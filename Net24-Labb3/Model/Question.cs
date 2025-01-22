@@ -25,6 +25,6 @@ namespace Net24_Labb3.Model
         public string CorrectAnswer { get; set; }
         public string[] IncorrectAnswers { get; set; }
 
-
+        public Question() { }   
     }
 }

@@ -21,7 +21,7 @@ namespace Net24_Labb3.ViewModel
         public PlayViewModel PlayViewModel { get; }
 
 
-        private QuizDbs _quizDbs;
+        private readonly QuizDbs _quizDbs;
 
         public ConfigurationViewModel ConfigurationViewModel { get; }
 
@@ -118,11 +118,15 @@ namespace Net24_Labb3.ViewModel
 
         public MainWindowViewModel()
         {
+
+            _quizDbs = new QuizDbs();
+
+            InitializeDatabaseAndLoadDataAsync();
             ConfigurationViewModel = new ConfigurationViewModel(this);
 
             PlayViewModel = new PlayViewModel(this);
 
-            _quizDbs = new QuizDbs();
+            
      
             ChooseQuestionCommand = new DelegateCommand(ChooseQuestion);
 
@@ -135,8 +139,6 @@ namespace Net24_Labb3.ViewModel
             IsResultMode = false;
 
             Packs = new ObservableCollection<QuestionPack>();
-
-            LoadPacksLoadPacksAndCategories();
 
             SetActivePackCommand = new DelegateCommand(SetActivePack, CanSetActivePack);
 
@@ -152,11 +154,21 @@ namespace Net24_Labb3.ViewModel
             CreatePackCommand = new DelegateCommand(CreatePack, CanCreatePack);
         }
 
-        public void LoadPacksLoadPacksAndCategories()
+        public async Task InitializeDatabaseAndLoadDataAsync()
         {
-            var packsInDb = _quizDbs.QuestionPacks.Find(_ => true).ToList();
+            DbStart.CategoryInitializer();
 
-            var categoriesInDb = _quizDbs.Categories.Find(_ => true).ToList();
+            var defaultPack = DbStart.QuestionPackInitializer();
+
+            await LoadPacksLoadPacksAndCategoriesAsync();
+        }
+
+
+        public async Task LoadPacksLoadPacksAndCategoriesAsync()
+        {
+            var packsInDb = await _quizDbs.QuestionPacks.Find(_ => true).ToListAsync();
+
+            var categoriesInDb = await _quizDbs.Categories.Find(_ => true).ToListAsync();
 
             foreach (var pack in packsInDb)
             {
@@ -165,12 +177,17 @@ namespace Net24_Labb3.ViewModel
 
             foreach (var cat in categoriesInDb)
             {
-                ConfigurationViewModel.Categories.Add(cat);
+                if (!ConfigurationViewModel.Categories.Any(c => c.Name == cat.Name))
+                {
+                    ConfigurationViewModel.Categories.Add(cat);
+                }
             }
 
             RaisePropertyChanged(nameof(Packs));
             RaisePropertyChanged(nameof(ConfigurationViewModel.Categories));
         }
+
+
         private void ChooseQuestion(object obj)
         {
             IsConfigurationMode = true;

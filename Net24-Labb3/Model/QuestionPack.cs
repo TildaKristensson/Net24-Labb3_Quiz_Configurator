@@ -35,5 +35,7 @@ namespace Net24_Labb3.Model
 
         public ObservableCollection<Question> Questions { get; set; }
         public Category Category { get; set; } 
+
+        public QuestionPack() { }
     }
 }

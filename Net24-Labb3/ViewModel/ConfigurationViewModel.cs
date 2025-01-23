@@ -11,8 +11,11 @@ using System.Drawing.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using MessageBox = System.Windows.MessageBox;
+
 
 namespace Net24_Labb3.ViewModel
 {
@@ -168,7 +171,11 @@ namespace Net24_Labb3.ViewModel
                 _quizDbs.Categories.DeleteOne(c => c.Id == ActiveCategory.Id);
                 RemoveCategoryCommand.RaiseCanExecuteChanged();
             }
-            else { return; }
+            else 
+            {
+                MessageBox.Show("You have to select a category to remove it.", "Select a category", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return; 
+            }
         }
 
         private void RemovePack(object obj)
@@ -181,7 +188,11 @@ namespace Net24_Labb3.ViewModel
 
                 RemovePackCommand.RaiseCanExecuteChanged();
             }
-            else { return; }
+            else
+            {
+                MessageBox.Show("You have to select a pack to remove it.", "Select a pack", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
         }
 
         private bool CanRemoveQuestion(object? arg) { return true; }
@@ -200,7 +211,11 @@ namespace Net24_Labb3.ViewModel
 
                 RemoveQuestionCommand.RaiseCanExecuteChanged();
             }
-            else { return; }
+            else
+            {
+                MessageBox.Show("You have to select a question to remove it.", "Select a question", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
         }
 
         private bool CanAddNewQuestion(object? arg) { return true; }
